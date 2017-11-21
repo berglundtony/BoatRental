@@ -16,7 +16,7 @@ namespace BookingBoatSystem.Tests
         {
             var registry = new Booking();
             bool IsSaved = false;
-            IsSaved = registry.RentABoatRegistry("7103140435", 3, DateTime.Now);
+            IsSaved = registry.RentABoatRegistry("8809210033", 5, DateTime.Now);
             Assert.IsTrue(IsSaved);
         }
     }
