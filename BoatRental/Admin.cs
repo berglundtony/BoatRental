@@ -50,11 +50,12 @@ namespace BoatRental
             Console.WriteLine("2. Se kategorier");
             Console.WriteLine("3. Lägg till ny båt");
             Console.WriteLine("4. Se alla båtar");
-            Console.WriteLine("5. Avsluta\r\n");
+            Console.WriteLine("5. Lägg till pris");
+            Console.WriteLine("6. Avsluta\r\n");
 
             option = int.Parse(Console.ReadLine());
 
-            while (option != 5)
+            while (option != 6)
             {
                 if (option == 1)
                 {
@@ -71,6 +72,10 @@ namespace BoatRental
                 else if (option == 4)
                 {
                     ShowAllBoats();
+                }
+                else if (option == 5)
+                {
+                    AddPrice();
                 }
                 else
                 {
@@ -91,11 +96,12 @@ namespace BoatRental
             Console.WriteLine("2. Se kategorier");
             Console.WriteLine("3. Lägg till ny båt");
             Console.WriteLine("4. Se alla båtar");
-            Console.WriteLine("5. Avsluta\r\n");
+            Console.WriteLine("5. Lägg till pris");
+            Console.WriteLine("6. Avsluta\r\n");
 
             option = int.Parse(Console.ReadLine());
 
-            while (option != 5)
+            while (option != 6)
             {
                 if (option == 1)
                 {
@@ -127,11 +133,9 @@ namespace BoatRental
                         {
                             try
                             {
-
                                 DB.Categories.Add(category);
                                 DB.SaveChanges();
                                 var id = category.CatID;
-
                             }
                             catch (Exception ex)
                             {
@@ -154,6 +158,10 @@ namespace BoatRental
                 {
                     ShowAllBoats();
                 }
+                else if (option == 5)
+                {
+                    AddPrice();
+                }
                 else
                 {
                     Console.ReadKey();
@@ -169,7 +177,7 @@ namespace BoatRental
             Console.WriteLine("================================");
             Console.WriteLine("Lägg till ny Båt");
             Console.WriteLine("================================");
-            Console.WriteLine("Vilket namn skall båden ha? ");
+            Console.WriteLine("Vilket namn skall båten ha? ");
             boat.Name = Console.ReadLine();
 
             using (var DB = new BoatBookingSystemEntities())
@@ -211,7 +219,7 @@ namespace BoatRental
                     }
                     catch (Exception ex)
                     {
-                        Console.Write("The boat could't be saved becouse of \"{0}\" .", ex.Message);
+                        Console.Write("The boat could't be saved because of \"{0}\" .", ex.Message);
                     }
                 }
             }
@@ -258,6 +266,7 @@ namespace BoatRental
                     }
 
                 }
+                Console.WriteLine();
                 Console.WriteLine("================================");
                 Console.WriteLine("Välj tjänst");
                 Console.WriteLine("================================");
@@ -265,12 +274,13 @@ namespace BoatRental
                 Console.WriteLine("2. Se kategorier");
                 Console.WriteLine("3. Lägg till ny båt");
                 Console.WriteLine("4. Se alla båtar");
-                Console.WriteLine("5. Avsluta\r\n");
+                Console.WriteLine("5. Lägg till pris");
+                Console.WriteLine("6. Avsluta\r\n");
 
 
                 var option = int.Parse(Console.ReadLine());
 
-                while (option <= 5)
+                while (option != 6)
                 {
                     if (option == 1)
                     {
@@ -290,10 +300,100 @@ namespace BoatRental
                     }
                     else if (option == 5)
                     {
+                        AddPrice();
+                    }
+                    else 
+                    {
                         Console.ReadKey();
                     }
                 }
+
+            }
+
+        }
+        private static void AddPrice()
+        {
+            var price = new Price();
+            decimal output = 0;
+
+            Console.WriteLine(" Gå tillbaka till huvudmenyn j/n:");
+
+            string choise = Console.ReadLine();
+
+            if (choise == "j")
+            {
+                return;
+            }
+            else
+            {
+
+                Console.Clear();
+                Console.WriteLine("================================");
+                Console.WriteLine("Lägg till nytt pris");
+                Console.WriteLine("================================");
+                Console.WriteLine("Ange grundpris: ");
+
+                using (var DB = new BoatBookingSystemEntities())
+                {
+                    try
+                    {
+                        if (decimal.TryParse(Console.ReadLine(), out output))
+                        {
+                            price.BasicFee = output;
+                        }
+                        Console.WriteLine("Ange timpris: ");
+                        if (decimal.TryParse(Console.ReadLine(), out output))
+                        {
+                            price.HourFee = output;
+                        }
+                        DB.Prices.Add(price);
+                        DB.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Write("The price could't be saved because of \"{0}\" .", ex.Message);
+                    }
                 }
             }
+
+            Console.WriteLine();
+            Console.WriteLine("================================");
+            Console.WriteLine("Välj tjänst");
+            Console.WriteLine("================================");
+            Console.WriteLine("1. Lägg till kategori");
+            Console.WriteLine("2. Se kategorier");
+            Console.WriteLine("3. Lägg till ny båt");
+            Console.WriteLine("4. Se alla båtar");
+            Console.WriteLine("5. Avsluta\r\n");
+
+
+            var option = int.Parse(Console.ReadLine());
+
+            while (option != 5)
+            {
+                if (option == 1)
+                {
+                    CreateCategories();
+                }
+                else if (option == 2)
+                {
+                    ShowAllCategories();
+                }
+                else if (option == 3)
+                {
+                    CreateNewBoat();
+                }
+                else if (option == 4)
+                {
+                    ShowAllBoats();
+                }
+                else
+                {
+                    Console.ReadKey();
+                }
+            }
+
         }
+
     }
+}
