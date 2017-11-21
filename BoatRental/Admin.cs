@@ -17,7 +17,7 @@ namespace BoatRental
             Console.WriteLine("Kategorier");
             Console.WriteLine("===============================");
 
-            using (var DB = new BoatBookingSystemEntities())
+            using (var DB = new Data.BoatBookingSystemEntities())
             {
                 var categories = DB.Categories.ToList();
 
@@ -87,7 +87,7 @@ namespace BoatRental
 
         public static void CreateCategories()
         {
-            var category = new Category();
+            var category = new Data.Category();
             int option = 0;
             Console.Clear();
             Console.WriteLine("================================");
@@ -130,7 +130,7 @@ namespace BoatRental
                             category.OverSizeFourty = false;
                         }
 
-                        using (var DB = new BoatBookingSystemEntities())
+                        using (var DB = new Data.BoatBookingSystemEntities())
                         {
                             try
                             {
@@ -171,7 +171,7 @@ namespace BoatRental
         }
         private static void CreateNewBoat()
         {
-            var boat = new Boat();
+            var boat = new Data.Boat();
             int output = 0;
 
             Console.Clear();
@@ -181,7 +181,7 @@ namespace BoatRental
             Console.WriteLine("Vilket namn skall båten ha? ");
             boat.Name = Console.ReadLine();
 
-            using (var DB = new BoatBookingSystemEntities())
+            using (var DB = new Data.BoatBookingSystemEntities())
             {
                 var categories = DB.Categories.ToList();
 
@@ -207,7 +207,7 @@ namespace BoatRental
             }
             Console.WriteLine("\r\nVälj Kategori_id: 1, 2, 3 osv.");
 
-            using (var DB = new BoatBookingSystemEntities())
+            using (var DB = new Data.BoatBookingSystemEntities())
             {
                 if (int.TryParse(Console.ReadLine(), out output))
                 {
@@ -241,7 +241,7 @@ namespace BoatRental
         private static void ShowAllBoats()
         {
 
-            using (var DB = new BoatBookingSystemEntities())
+            using (var DB = new Data.BoatBookingSystemEntities())
             {
                 var boats = DB.Boats.Join(DB.Categories, cat => cat.CatID, boat => boat.CatID, (boat, cat) => new { BoatID = boat.BoatID, BoatName = boat.Name, CatName = cat.Name, SizeOver40Feets = cat.OverSizeFourty }).ToList();
                 Console.Clear();
@@ -315,7 +315,7 @@ namespace BoatRental
 
         private static void AddPrice()
         {
-            var price = new Price();
+            var price = new Data.Price();
             decimal output = 0;
             bool exit = false;
 
@@ -336,7 +336,7 @@ namespace BoatRental
                     Console.WriteLine("================================");
                     Console.WriteLine("Ange grundpris: ");
 
-                    using (var DB = new BoatBookingSystemEntities())
+                    using (var DB = new Data.BoatBookingSystemEntities())
                     {
                         try
                         {

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingBoatSystem", "Bookin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingBoatSystemTests", "BookingBoatSystemTests\BookingBoatSystemTests.csproj", "{FB1CB99F-0B42-4D6B-9B75-C2683ED9904B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{B1541216-3E72-4588-8EE4-ABDAE202F768}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,22 @@ Global
 		{FB1CB99F-0B42-4D6B-9B75-C2683ED9904B}.Release|x64.Build.0 = Release|Any CPU
 		{FB1CB99F-0B42-4D6B-9B75-C2683ED9904B}.Release|x86.ActiveCfg = Release|Any CPU
 		{FB1CB99F-0B42-4D6B-9B75-C2683ED9904B}.Release|x86.Build.0 = Release|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Debug|ARM.Build.0 = Debug|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Debug|x64.Build.0 = Debug|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Debug|x86.Build.0 = Debug|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Release|ARM.ActiveCfg = Release|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Release|ARM.Build.0 = Release|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Release|x64.ActiveCfg = Release|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Release|x64.Build.0 = Release|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Release|x86.ActiveCfg = Release|Any CPU
+		{B1541216-3E72-4588-8EE4-ABDAE202F768}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

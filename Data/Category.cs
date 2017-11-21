@@ -7,18 +7,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BoatRental
+namespace Data
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Booking
+    public partial class Category
     {
-        public int BookingNumber { get; set; }
-        public int PersonNumber { get; set; }
         public int CatID { get; set; }
-        public int BoatID { get; set; }
-        public System.DateTime DeliveyDateTime { get; set; }
-        public Nullable<System.DateTime> ReturnDateTime { get; set; }
+        public string Name { get; set; }
+        public Nullable<bool> OverSizeFourty { get; set; }
     }
 }

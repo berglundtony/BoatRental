@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace BookingBoatSystem
 {
     public interface ICalculator
@@ -33,15 +32,14 @@ namespace BookingBoatSystem
 
     public class Booking
     {
-        public bool RentABoatRegistry(int personnumber, int catid, int boatid, DateTime deliverydatetime)
+        public bool RentABoatRegistry(string personnumber, int boatid, DateTime deliverydatetime)
         {
-            var rentopportunity = new BoatRental.Booking();
+            var rentopportunity = new Data.Booking();
             try
             {
-                using (var DB = new BoatRental.BoatBookingSystemEntities())
+                using (var DB = new Data.BoatBookingSystemEntities())
                 {
                     rentopportunity.PersonNumber = personnumber;
-                    rentopportunity.CatID = catid;
                     rentopportunity.BoatID = boatid;
                     rentopportunity.DeliveyDateTime = DateTime.Now;
 
@@ -52,7 +50,7 @@ namespace BookingBoatSystem
 
             }catch(Exception ex)
             {
-                string.Format("The rentregistry could't be saved because of \"{0}\" .", ex.Message);
+                string.Format("The rent registry could't be saved because of \"{0}\" .", ex.Message);
                 return false;
             }
 

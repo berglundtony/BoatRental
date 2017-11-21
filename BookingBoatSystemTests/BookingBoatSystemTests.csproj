@@ -60,16 +60,22 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="BookingTests.cs" />
     <Compile Include="CalculatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BookingBoatSystem\BookingBoatSystem.csproj">
       <Project>{0F527357-270D-43C3-8F60-61ECED9BB8C7}</Project>
       <Name>BookingBoatSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{b1541216-3e72-4588-8ee4-abdae202f768}</Project>
+      <Name>Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

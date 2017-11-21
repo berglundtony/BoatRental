@@ -7,15 +7,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BoatRental
+namespace Data
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Boat
+    public partial class Price
     {
-        public int BoatID { get; set; }
-        public int CatID { get; set; }
-        public string Name { get; set; }
+        public int ID { get; set; }
+        public decimal BasicFee { get; set; }
+        public decimal HourFee { get; set; }
     }
 }

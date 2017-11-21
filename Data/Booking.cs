@@ -7,15 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BoatRental
+namespace Data
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Price
+    public partial class Booking
     {
-        public int ID { get; set; }
-        public decimal BasicFee { get; set; }
-        public decimal HourFee { get; set; }
+        public int BookingNumber { get; set; }
+        public string PersonNumber { get; set; }
+        public int BoatID { get; set; }
+        public System.DateTime DeliveyDateTime { get; set; }
+        public Nullable<System.DateTime> ReturnDateTime { get; set; }
     }
 }

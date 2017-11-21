@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="BoatBookingSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="BoatBookingSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Boats">
           <Key>
             <PropertyRef Name="BoatID" />
@@ -18,8 +18,7 @@
             <PropertyRef Name="BookingNumber" />
           </Key>
           <Property Name="BookingNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PersonNumber" Type="int" Nullable="false" />
-          <Property Name="CatID" Type="int" Nullable="false" />
+          <Property Name="PersonNumber" Type="nvarchar" MaxLength="12" Nullable="false" />
           <Property Name="BoatID" Type="int" Nullable="false" />
           <Property Name="DeliveyDateTime" Type="datetime" Nullable="false" />
           <Property Name="ReturnDateTime" Type="datetime" />
@@ -46,7 +45,8 @@
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prices" EntityType="Self.Prices" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BoatBookingSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -63,8 +63,7 @@
             <PropertyRef Name="BookingNumber" />
           </Key>
           <Property Name="BookingNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PersonNumber" Type="Int32" Nullable="false" />
-          <Property Name="CatID" Type="Int32" Nullable="false" />
+          <Property Name="PersonNumber" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BoatID" Type="Int32" Nullable="false" />
           <Property Name="DeliveyDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ReturnDateTime" Type="DateTime" Precision="3" />
@@ -100,9 +99,9 @@
           <EntitySetMapping Name="Boats">
             <EntityTypeMapping TypeName="BoatBookingSystemModel.Boat">
               <MappingFragment StoreEntitySet="Boats">
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="BoatID" ColumnName="BoatID" />
                 <ScalarProperty Name="CatID" ColumnName="CatID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -111,7 +110,6 @@
               <MappingFragment StoreEntitySet="Bookings">
                 <ScalarProperty Name="BookingNumber" ColumnName="BookingNumber" />
                 <ScalarProperty Name="PersonNumber" ColumnName="PersonNumber" />
-                <ScalarProperty Name="CatID" ColumnName="CatID" />
                 <ScalarProperty Name="BoatID" ColumnName="BoatID" />
                 <ScalarProperty Name="DeliveyDateTime" ColumnName="DeliveyDateTime" />
                 <ScalarProperty Name="ReturnDateTime" ColumnName="ReturnDateTime" />
@@ -136,7 +134,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

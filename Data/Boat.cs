@@ -7,15 +7,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BoatRental
+namespace Data
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Category
+    public partial class Boat
     {
+        public int BoatID { get; set; }
         public int CatID { get; set; }
         public string Name { get; set; }
-        public Nullable<bool> OverSizeFourty { get; set; }
     }
 }

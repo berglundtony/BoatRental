@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BoatRental
+namespace Data
 {
     using System;
     using System.Data.Entity;
