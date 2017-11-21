@@ -33,13 +33,30 @@ namespace BookingBoatSystem
 
     public class Booking
     {
-        public bool RentABoat(int personnumber, int catid, int boatid, DateTime deliverydatetime)
+        public bool RentABoatRegistry(int personnumber, int catid, int boatid, DateTime deliverydatetime)
         {
-            var 
-            using(var DB = new BoatRental.BoatBookingSystemEntities())
+            var rentopportunity = new BoatRental.Booking();
+            try
             {
+                using (var DB = new BoatRental.BoatBookingSystemEntities())
+                {
+                    rentopportunity.PersonNumber = personnumber;
+                    rentopportunity.CatID = catid;
+                    rentopportunity.BoatID = boatid;
+                    rentopportunity.DeliveyDateTime = DateTime.Now;
 
+                    DB.Bookings.Add(rentopportunity);
+                    DB.SaveChanges();
+                }
+                return true;
+
+            }catch(Exception ex)
+            {
+                string.Format("The rentregistry could't be saved because of \"{0}\" .", ex.Message);
+                return false;
             }
+
+   
         }
     }
 }
