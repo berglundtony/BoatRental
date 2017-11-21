@@ -33,6 +33,13 @@ namespace BookingBoatSystem
 
     public class Booking
     {
+        public bool RentABoat(int personnumber, int catid, int boatid, DateTime deliverydatetime)
+        {
+            var 
+            using(var DB = new BoatRental.BoatBookingSystemEntities())
+            {
 
+            }
+        }
     }
 }
