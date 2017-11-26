@@ -20,22 +20,30 @@ namespace BookingBoatSystem.Tests
             Assert.IsTrue(IsSaved);
         }
 
+        /// <summary>
+        /// You know the booking number when you return the boat, and the returndate stores in the database.
+        /// </summary>
+
         [TestMethod()]
         public void ReturnBoatByBookingNumberTest()
         {
             var returnregistry = new Booking();
             bool IsSaved = false;
-            IsSaved = returnregistry.ReturnBoatByBookingNumber(1);
+            IsSaved = returnregistry.ReturnBoatByBookingNumber(25);
             Assert.IsTrue(IsSaved);
         }
+        /// <summary>
+        /// Get the bookingnumber by the PersonIdentyNumber
+        /// </summary>
 
         [TestMethod()]
         public void ReturnBoatByPersonIdentityNumberTest()
         {
             var returnregistry = new Booking();
-            bool IsSaved = false;
-            returnregistry.CheckBoatByPersonIdentityNumber("7103140435");
-            Assert.IsTrue(IsSaved);
+            int expectedBookingNumber = returnregistry.LatestBookingNumberByPersonIdentityNumber("8809210033");
+            int BookingNumber;
+            BookingNumber = returnregistry.CheckLatestRentByPersonIdentityNumber("8809210033");
+            Assert.AreEqual(BookingNumber, expectedBookingNumber);
         }
     }
 }

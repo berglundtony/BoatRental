@@ -18,9 +18,9 @@ namespace Data
         public BoatBookingSystemEntities()
             : base("name=BoatBookingSystemEntities")
         {
-            // the terrible hack
-            //var ensureDLLIsCopied =
-            //        System.Data.Entity.SqlServer.SqlProviderServices.Instance;
+           //the terrible hack
+           var ensureDLLIsCopied =
+                   System.Data.Entity.SqlServer.SqlProviderServices.Instance;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

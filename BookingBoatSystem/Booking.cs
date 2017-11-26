@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,10 @@ namespace BookingBoatSystem
 {
     public class Booking
     {
+        int bookingnumber;
+        double price;
+        List<int> _bookingnumbers = new List<int>();
+
         public bool RentABoatRegistry(string personnumber, int boatid, DateTime deliverydatetime)
         {
             var rentopportunity = new Data.Booking();
@@ -30,6 +35,10 @@ namespace BookingBoatSystem
                 return false;
             }
         }
+        /// <summary>
+        /// You know the booking number when you return the boat, and the returndate stores in the database.
+        /// </summary>
+   
 
         public bool ReturnBoatByBookingNumber(int bookingnumber)
         {
@@ -57,44 +66,83 @@ namespace BookingBoatSystem
             }
         }
 
+        /// <summary>
+        /// Get the bookingnumber by the PersonIdentyNumber
+        /// </summary>
 
-        public void CheckBoatByPersonIdentityNumber(string personidentitynumber)
+        public int CheckLatestRentByPersonIdentityNumber(string personidentitynumber)
         {
-
             try
-            {
+            {  
                 using (var DB = new Data.BoatBookingSystemEntities())
                 {
-                    //var bookings = DB.Bookings
-                    //    .Join(DB.Boats, book => book.BoatID, boat => boat.BoatID, (book, boat) => book)
-                    //    .Join(DB.Categories, boat => boat.BoatID, cat => cat.CatID, (boat, cat) => boat)
-                    //    .Where(x => x.PersonNumber.Equals(personidentitynumber))
-                    //    .Select(x => new {
-                    //        BookingNumb = x.BookingNumber,
-                    //        BoatID = x.BoatID,
-                    //    }).ToList();
-
 
                     var bookings = (from b in DB.Bookings
-                                   join u in DB.Boats on b.BoatID equals u.BoatID
-                                   join c in DB.Categories on u.CatID equals c.CatID
-                                   where b.PersonNumber.Equals(personidentitynumber)
-                                   select new {
-                                       BookingNumb = b.BookingNumber,
-                                       BoatName = u.Name,
-                                       Category = c.Name,
-                                       OverFourtyFeet = c.OverSizeFourty
-                                   }).ToList();
+                                    join u in DB.Boats on b.BoatID equals u.BoatID
+                                    join c in DB.Categories on u.CatID equals c.CatID
+                                    where b.PersonNumber.Equals(personidentitynumber)
+                                    select new
+                                    {
+                                        BookingNumber = b.BookingNumber,
+                                        BoatName = u.Name,
+                                        Category = c.Name,
+                                        OverFourtyFeet = c.OverSizeFourty,
+                                        DeliveryDate = b.DeliveyDateTime
+                                    }).ToList(); 
 
-
-
+                    foreach (var item in bookings)
+                    {
+                        if (item.DeliveryDate.Date == DateTime.Now.Date)
+                        {
+                            _bookingnumbers.Add(item.BookingNumber);
+                        }
+                        else
+                        {
+                            _bookingnumbers.Add(0);
+                        }
+                    }
+                    bookingnumber = _bookingnumbers.Last();
+                   
                 }
-
+                return bookingnumber;
             }
             catch (Exception ex)
             {
                 string.Format("We could not find your rent information because of \"{0}\" .", ex.Message);
+                bookingnumber = 0;
+                return bookingnumber;
+
             }
+        }
+
+        public int LatestBookingNumberByPersonIdentityNumber(string personidentitynumber)
+        {
+            try
+            {
+                using (var DB = new Data.BoatBookingSystemEntities())
+                {
+                    var bookings = DB.Bookings
+                    .Where(b => b.PersonNumber == personidentitynumber).OrderByDescending(b => b.DeliveyDateTime)
+                    .Select(b => b.BookingNumber)
+                    .FirstOrDefault();
+
+                    bookingnumber = bookings;
+
+                }
+                return bookingnumber;
+            }
+            catch (Exception ex)
+            {
+                string.Format("We could not find your rent information because of \"{0}\" .", ex.Message);
+                bookingnumber = 0;
+                return bookingnumber;
+
+            }
+        }
+
+        public double GetThePriceOfTheBoutRent()
+        {
+
         }
     }
 }

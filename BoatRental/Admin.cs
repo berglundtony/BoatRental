@@ -17,32 +17,40 @@ namespace BoatRental
             Console.WriteLine("Kategorier");
             Console.WriteLine("===============================");
 
-            using (var DB = new Data.BoatBookingSystemEntities())
+            try
             {
-                var categories = DB.Categories.ToList();
-
-                foreach (var r in categories)
+                using (var DB = new Data.BoatBookingSystemEntities())
                 {
-                    Console.WriteLine("***************************************************************");
-                    Console.WriteLine(" ID: " + r.CatID);
-                    Console.WriteLine(" Namn: " + r.Name);
+                    var categories = DB.Categories.ToList();
 
-                    if (r.Name == "Segelbåt")
+                    foreach (var r in categories)
                     {
-                        if (r.OverSizeFourty == true)
+                        Console.WriteLine("***************************************************************");
+                        Console.WriteLine(" ID: " + r.CatID);
+                        Console.WriteLine(" Namn: " + r.Name);
+
+                        if (r.Name == "Segelbåt")
                         {
-                            Console.WriteLine(" Över 40 tum.");
+                            if (r.OverSizeFourty == true)
+                            {
+                                Console.WriteLine(" Över 40 tum.");
+                            }
+                            else
+                            {
+                                Console.WriteLine(" mindre än 40 tum.");
+                            }
                         }
-                        else
-                        {
-                            Console.WriteLine(" mindre än 40 tum.");
-                        }
+                        Console.WriteLine();
                     }
-                    Console.WriteLine();
                 }
             }
+            catch (Exception ex)
+            {
+                Console.Write("Can't find categories because of, \"{0}\" .", ex.Message);
 
-            int option = 0;
+            }
+
+                int option = 0;
 
             Console.WriteLine("================================");
             Console.WriteLine("Välj tjänst");
