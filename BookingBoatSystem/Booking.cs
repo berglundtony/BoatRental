@@ -47,7 +47,7 @@ namespace BookingBoatSystem
             {
                 using (var DB = new Data.BoatBookingSystemEntities())
                 {
-                    var booking = DB.Bookings.Where(x => x.BookingNumber.Equals(bookingnumber)).FirstOrDefault();
+                    var booking = DB.Bookings.FirstOrDefault(x => x.BookingNumber.Equals(bookingnumber));
 
                     if (booking != null)
                     {
@@ -140,9 +140,53 @@ namespace BookingBoatSystem
             }
         }
 
-        public double GetThePriceOfTheBoutRent()
+        public bool GetThePriceOfTheBoutRent(int bookingnumber)
         {
+            DateTime deliveryTime;
+            DateTime? returnTime;
+            DateTime newReturnTime;
+            TimeSpan duration;
+            int boatnumber;
+            try
+            {
+                using (var DB = new Data.BoatBookingSystemEntities())
+                {
+                    var booking = DB.Bookings.FirstOrDefault(x => x.BookingNumber.Equals(bookingnumber));
+
+                    if (booking != null)
+                    {
+                        deliveryTime = booking.DeliveyDateTime;
+                        returnTime = booking.ReturnDateTime;
+                        newReturnTime = (DateTime)booking.ReturnDateTime;
+                        duration = newReturnTime.Subtract(deliveryTime);
+                        var hours = duration.Hours;
+                        var minutes = duration.Minutes;
+                        boatnumber = booking.BoatID
+                        GetRentalPrice(hours, minutes, boatnumber);
+
+                    }  
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                string.Format("The return registry could't be saved because of \"{0}\" .", ex.Message);
+                return false;
+            }
 
         }
+
+        private double GetRentalPrice(int hours, int minutes,int boatnumber)
+        {
+            using(var DB = new Data.BoatBookingSystemEntities())
+            {
+                var boattype = (from b in DB.Bookings
+                                join s in DB.Boats on b.BoatID equals s.BoatID
+                                join c in DB.Categories on s.CatID equals c.CatID
+                                where b.BoatID == boatnumber select c);
+            }
+        }
+}
     }
 }
