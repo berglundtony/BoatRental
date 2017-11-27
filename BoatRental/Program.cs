@@ -33,11 +33,10 @@ namespace BoatRental
                 }
                 else
                 {
-                    Console.ReadKey();
+                    return;
                 }
-
             }
-
+            return;
         }
 
         public static void Start()
@@ -64,11 +63,10 @@ namespace BoatRental
                 }
                 else
                 {
-                    Console.ReadKey();
+                    System.Environment.Exit(-1);
                 }
-
             }
-
+            System.Environment.Exit(-1);
         }
 
     }
