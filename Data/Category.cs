@@ -14,8 +14,17 @@ namespace Data
     
     public partial class Category
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Category()
+        {
+            this.Boats = new HashSet<Boat>();
+        }
+    
         public int CatID { get; set; }
         public string Name { get; set; }
         public Nullable<bool> OverSizeFourty { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Boat> Boats { get; set; }
     }
 }

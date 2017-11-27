@@ -6,9 +6,12 @@
     <edmx:Diagrams>
       <Diagram DiagramId="5d1674fd09354b3da140a81813bf5e7a" Name="Diagram1">
         <EntityTypeShape EntityType="BoatBookingSystemModel.Boat" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BoatBookingSystemModel.Booking" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BoatBookingSystemModel.Booking" Width="1.5" PointX="3.375" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BoatBookingSystemModel.Category" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BoatBookingSystemModel.Price" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BoatBookingSystemModel.Price" Width="1.5" PointX="3.375" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="BoatBookingSystemModel.FK_Boats_Categories" />
+        <AssociationConnector Association="BoatBookingSystemModel.FK_Bookings_Boats" ManuallyRouted="false" >
+        </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

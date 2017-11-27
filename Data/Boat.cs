@@ -14,8 +14,18 @@ namespace Data
     
     public partial class Boat
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Boat()
+        {
+            this.Bookings = new HashSet<Booking>();
+        }
+    
         public int BoatID { get; set; }
         public int CatID { get; set; }
         public string Name { get; set; }
+    
+        public virtual Category Category { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }

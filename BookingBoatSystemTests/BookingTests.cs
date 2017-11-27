@@ -16,7 +16,7 @@ namespace BookingBoatSystem.Tests
         {
             var registry = new Booking();
             bool IsSaved = false;
-            IsSaved = registry.RentABoatRegistry("8909210033", 6, DateTime.Now);
+            IsSaved = registry.RentABoatRegistry("8909210033", 1, DateTime.Now);
             Assert.IsTrue(IsSaved);
         }
 
@@ -28,8 +28,9 @@ namespace BookingBoatSystem.Tests
         public void ReturnBoatByBookingNumberTest()
         {
             var returnregistry = new Booking();
+            var latestrent = returnregistry.CheckLatestRentByPersonIdentityNumber("8909210033");
             bool IsSaved = false;
-            IsSaved = returnregistry.ReturnBoatByBookingNumber(26);
+            IsSaved = returnregistry.ReturnBoatByBookingNumber(latestrent);
             Assert.IsTrue(IsSaved);
         }
         /// <summary>
@@ -40,10 +41,21 @@ namespace BookingBoatSystem.Tests
         public void ReturnBoatByPersonIdentityNumberTest()
         {
             var returnregistry = new Booking();
-            int expectedBookingNumber = returnregistry.LatestBookingNumberByPersonIdentityNumber("8809210033");
+            int expectedBookingNumber = returnregistry.LatestBookingNumberByPersonIdentityNumber("8909210033");
             int BookingNumber;
-            BookingNumber = returnregistry.CheckLatestRentByPersonIdentityNumber("8809210033");
+            BookingNumber = returnregistry.CheckLatestRentByPersonIdentityNumber("8909210033");
             Assert.AreEqual(BookingNumber, expectedBookingNumber);
+        }
+
+        [TestMethod()]
+        public void GetThePriceOfTheBoutRentTest()
+        {
+            var booking = new Booking();
+            bool GotPrice = false;
+            int BookingNumber;
+            BookingNumber = booking.CheckLatestRentByPersonIdentityNumber("8909210033");
+            GotPrice = booking.GetThePriceOfTheBoutRent(BookingNumber);
+            Assert.IsTrue(GotPrice);
         }
     }
 }

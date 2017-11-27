@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BoatBookingSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BoatBookingSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Boats">
           <Key>
             <PropertyRef Name="BoatID" />
@@ -39,14 +39,45 @@
           <Property Name="BasicFee" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="HourFee" Type="decimal" Precision="10" Scale="2" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Boats_Categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="Boats" Type="Self.Boats" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CatID" />
+            </Principal>
+            <Dependent Role="Boats">
+              <PropertyRef Name="CatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bookings_Boats">
+          <End Role="Boats" Type="Self.Boats" Multiplicity="1" />
+          <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Boats">
+              <PropertyRef Name="BoatID" />
+            </Principal>
+            <Dependent Role="Bookings">
+              <PropertyRef Name="BoatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="BoatBookingSystemModelStoreContainer">
           <EntitySet Name="Boats" EntityType="Self.Boats" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bookings" EntityType="Self.Bookings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prices" EntityType="Self.Prices" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Boats_Categories" Association="Self.FK_Boats_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Boats" EntitySet="Boats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bookings_Boats" Association="Self.FK_Bookings_Boats">
+            <End Role="Boats" EntitySet="Boats" />
+            <End Role="Bookings" EntitySet="Bookings" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BoatBookingSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -57,6 +88,8 @@
           <Property Name="BoatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CatID" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Category" Relationship="BoatBookingSystemModel.FK_Boats_Categories" FromRole="Boat" ToRole="Category" />
+          <NavigationProperty Name="Bookings" Relationship="BoatBookingSystemModel.FK_Bookings_Boats" FromRole="Boat" ToRole="Booking" />
         </EntityType>
         <EntityType Name="Booking">
           <Key>
@@ -67,6 +100,7 @@
           <Property Name="BoatID" Type="Int32" Nullable="false" />
           <Property Name="DeliveyDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ReturnDateTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Boat" Relationship="BoatBookingSystemModel.FK_Bookings_Boats" FromRole="Booking" ToRole="Boat" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -75,6 +109,7 @@
           <Property Name="CatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="OverSizeFourty" Type="Boolean" />
+          <NavigationProperty Name="Boats" Relationship="BoatBookingSystemModel.FK_Boats_Categories" FromRole="Category" ToRole="Boat" />
         </EntityType>
         <EntityType Name="Price">
           <Key>
@@ -89,7 +124,39 @@
           <EntitySet Name="Bookings" EntityType="Self.Booking" />
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Prices" EntityType="Self.Price" />
+          <AssociationSet Name="FK_Boats_Categories" Association="BoatBookingSystemModel.FK_Boats_Categories">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Boat" EntitySet="Boats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bookings_Boats" Association="BoatBookingSystemModel.FK_Bookings_Boats">
+            <End Role="Boat" EntitySet="Boats" />
+            <End Role="Booking" EntitySet="Bookings" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Boats_Categories">
+          <End Type="BoatBookingSystemModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="BoatBookingSystemModel.Boat" Role="Boat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CatID" />
+            </Principal>
+            <Dependent Role="Boat">
+              <PropertyRef Name="CatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bookings_Boats">
+          <End Type="BoatBookingSystemModel.Boat" Role="Boat" Multiplicity="1" />
+          <End Type="BoatBookingSystemModel.Booking" Role="Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Boat">
+              <PropertyRef Name="BoatID" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="BoatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

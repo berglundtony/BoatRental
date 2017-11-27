@@ -19,5 +19,7 @@ namespace Data
         public int BoatID { get; set; }
         public System.DateTime DeliveyDateTime { get; set; }
         public Nullable<System.DateTime> ReturnDateTime { get; set; }
+    
+        public virtual Boat Boat { get; set; }
     }
 }

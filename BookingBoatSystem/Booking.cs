@@ -9,9 +9,20 @@ namespace BookingBoatSystem
 {
     public class Booking
     {
-        int bookingnumber;
-        double price;
+        enum CategoryName { Jolle, Segelbåt };
+        static CategoryName categoryname;
         List<int> _bookingnumbers = new List<int>();
+        int bookingnumber;
+        decimal basicprice;
+        decimal hourprice;
+        decimal hourpricesmallboat;
+        decimal hourpricebigboat;
+        decimal totalprice;
+        decimal multiplyBigBoat = 1.5m;
+        decimal multiplySmallBoat = 1.2m;
+        decimal multiplyhourBigBoat = 1.4m;
+        decimal multiplyhourSmallBoat = 1.3m;
+
 
         public bool RentABoatRegistry(string personnumber, int boatid, DateTime deliverydatetime)
         {
@@ -29,7 +40,8 @@ namespace BookingBoatSystem
                 }
                 return true;
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 string.Format("The rent registry could't be saved because of \"{0}\" .", ex.Message);
                 return false;
@@ -38,7 +50,7 @@ namespace BookingBoatSystem
         /// <summary>
         /// You know the booking number when you return the boat, and the returndate stores in the database.
         /// </summary>
-   
+
 
         public bool ReturnBoatByBookingNumber(int bookingnumber)
         {
@@ -73,7 +85,7 @@ namespace BookingBoatSystem
         public int CheckLatestRentByPersonIdentityNumber(string personidentitynumber)
         {
             try
-            {  
+            {
                 using (var DB = new Data.BoatBookingSystemEntities())
                 {
 
@@ -81,6 +93,7 @@ namespace BookingBoatSystem
                                     join u in DB.Boats on b.BoatID equals u.BoatID
                                     join c in DB.Categories on u.CatID equals c.CatID
                                     where b.PersonNumber.Equals(personidentitynumber)
+                                    orderby b.DeliveyDateTime descending
                                     select new
                                     {
                                         BookingNumber = b.BookingNumber,
@@ -88,21 +101,11 @@ namespace BookingBoatSystem
                                         Category = c.Name,
                                         OverFourtyFeet = c.OverSizeFourty,
                                         DeliveryDate = b.DeliveyDateTime
-                                    }).ToList(); 
+                                    }).FirstOrDefault();
 
-                    foreach (var item in bookings)
-                    {
-                        if (item.DeliveryDate.Date == DateTime.Now.Date)
-                        {
-                            _bookingnumbers.Add(item.BookingNumber);
-                        }
-                        else
-                        {
-                            _bookingnumbers.Add(0);
-                        }
-                    }
-                    bookingnumber = _bookingnumbers.Last();
-                   
+
+                    bookingnumber = bookings.BookingNumber;
+
                 }
                 return bookingnumber;
             }
@@ -153,40 +156,91 @@ namespace BookingBoatSystem
                 {
                     var booking = DB.Bookings.FirstOrDefault(x => x.BookingNumber.Equals(bookingnumber));
 
-                    if (booking != null)
+                    if (booking != null && booking.ReturnDateTime != null)
                     {
                         deliveryTime = booking.DeliveyDateTime;
                         returnTime = booking.ReturnDateTime;
                         newReturnTime = (DateTime)booking.ReturnDateTime;
                         duration = newReturnTime.Subtract(deliveryTime);
-                        var hours = duration.Hours;
+                        var days = duration.Days;
+                        if (days > 0)
+                        days = days * 24;
+                        var hours = duration.Hours + days;
                         var minutes = duration.Minutes;
-                        boatnumber = booking.BoatID
-                        GetRentalPrice(hours, minutes, boatnumber);
-
-                    }  
+                        if (minutes >= 1)
+                        hours += 1;
+                        boatnumber = booking.BoatID;
+                        GetRentalPrice(hours, boatnumber);
+                        return true;
+                    }
+                    else
+                    {
+                        string.Format("The price could't be delivered because there is no return datetime of this rental.");
+                        return false;
+                    }
                 }
-                return true;
+              
 
             }
             catch (Exception ex)
             {
-                string.Format("The return registry could't be saved because of \"{0}\" .", ex.Message);
+                string.Format("The price could't be delivered because of \"{0}\" .", ex.Message);
                 return false;
             }
 
         }
 
-        private double GetRentalPrice(int hours, int minutes,int boatnumber)
+        private decimal GetRentalPrice(int hours, int boatnumber)
         {
-            using(var DB = new Data.BoatBookingSystemEntities())
+            using (var DB = new Data.BoatBookingSystemEntities())
             {
-                var boattype = (from b in DB.Bookings
-                                join s in DB.Boats on b.BoatID equals s.BoatID
-                                join c in DB.Categories on s.CatID equals c.CatID
-                                where b.BoatID == boatnumber select c);
+                var category = DB.Bookings.Join(DB.Boats, booking =>
+                booking.BoatID,
+                boat => boat.BoatID,
+                (booking, boat) => new { Booking = booking, Boat = boat, CategoryID = boat.CatID })
+                .Where(boat => boat.Boat.BoatID.Equals(boatnumber)).FirstOrDefault();
+
+                var catname = DB.Categories.Where(c => c.CatID == category.CategoryID)
+                    .Include(n => n.Name)
+                    .Include(s => s.OverSizeFourty)
+                    .Select(c => new
+                    {
+                        CategoryName = c.Name,
+                        BoatSize = c.OverSizeFourty
+
+                    }).FirstOrDefault();
+
+                var prices = (from p in DB.Prices select p).FirstOrDefault();
+
+                categoryname = (CategoryName)Enum.Parse(typeof(CategoryName), catname.CategoryName.ToString());
+               
+
+                switch (categoryname)
+                {
+                    case Booking.CategoryName.Segelbåt:
+                        if ((bool)catname.BoatSize)
+                        {
+                            basicprice = decimal.Multiply(prices.BasicFee, multiplyBigBoat);
+                            hourpricebigboat = decimal.Multiply(prices.HourFee, multiplyhourBigBoat);
+                            hourprice = decimal.Multiply(hourpricebigboat, hours);
+                            return totalprice = decimal.Add(basicprice, hourprice);
+                        }
+                        else
+                        {
+                            basicprice = decimal.Multiply(prices.BasicFee, multiplySmallBoat);
+                            hourpricesmallboat = decimal.Multiply(prices.HourFee, multiplyhourSmallBoat);
+                            hourprice = decimal.Multiply(hourpricesmallboat, hours);
+                            return totalprice = decimal.Add(basicprice, hourprice);
+                        }
+                    case Booking.CategoryName.Jolle:
+                        basicprice = prices.BasicFee;
+                        hourprice = decimal.Multiply(prices.HourFee, hours);
+                        return totalprice = decimal.Add(basicprice, hourprice);
+
+                    default: return totalprice;
+                }
             }
         }
-}
     }
 }
+
