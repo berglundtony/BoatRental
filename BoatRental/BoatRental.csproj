@@ -54,6 +54,7 @@
     <Compile Include="Admin.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rental.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -63,6 +64,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BookingBoatSystem\BookingBoatSystem.csproj">
+      <Project>{0f527357-270d-43c3-8f60-61eced9bb8c7}</Project>
+      <Name>BookingBoatSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{b1541216-3e72-4588-8ee4-abdae202f768}</Project>
       <Name>Data</Name>

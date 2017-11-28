@@ -16,7 +16,7 @@ namespace BookingBoatSystem.Tests
         {
             var registry = new Booking();
             bool IsSaved = false;
-            IsSaved = registry.RentABoatRegistry("8909210033", 1, DateTime.Now);
+            IsSaved = registry.RentABoatRegistry("8909210033", 1);
             Assert.IsTrue(IsSaved);
         }
 
@@ -28,9 +28,9 @@ namespace BookingBoatSystem.Tests
         public void ReturnBoatByBookingNumberTest()
         {
             var returnregistry = new Booking();
-            var latestrent = returnregistry.CheckLatestRentByPersonIdentityNumber("8909210033");
+            var latestrent = returnregistry.CheckLatestRentByPersonIdentityNumber("7103140435");
             bool IsSaved = false;
-            IsSaved = returnregistry.ReturnBoatByBookingNumber(latestrent);
+            IsSaved = returnregistry.ReturnBoatByBookingNumber(40);
             Assert.IsTrue(IsSaved);
         }
         /// <summary>

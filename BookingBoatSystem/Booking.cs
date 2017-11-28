@@ -23,8 +23,8 @@ namespace BookingBoatSystem
         decimal multiplyhourBigBoat = 1.4m;
         decimal multiplyhourSmallBoat = 1.3m;
 
-
-        public bool RentABoatRegistry(string personnumber, int boatid, DateTime deliverydatetime)
+    
+        public bool RentABoatRegistry(string personnumber, int boatid)
         {
             var rentopportunity = new Data.Booking();
             try
@@ -33,7 +33,7 @@ namespace BookingBoatSystem
                 {
                     rentopportunity.PersonNumber = personnumber;
                     rentopportunity.BoatID = boatid;
-                    rentopportunity.DeliveyDateTime = deliverydatetime;
+                    rentopportunity.DeliveyDateTime = DateTime.Now;
 
                     DB.Bookings.Add(rentopportunity);
                     DB.SaveChanges();
@@ -206,7 +206,7 @@ namespace BookingBoatSystem
                     .Select(c => new
                     {
                         CategoryName = c.Name,
-                        BoatSize = c.OverSizeFourty
+                        IsBiggerOrLike40Foot = c.OverSizeFourty
 
                     }).FirstOrDefault();
 
@@ -214,11 +214,10 @@ namespace BookingBoatSystem
 
                 categoryname = (CategoryName)Enum.Parse(typeof(CategoryName), catname.CategoryName.ToString());
                
-
                 switch (categoryname)
                 {
                     case Booking.CategoryName.Segelbåt:
-                        if ((bool)catname.BoatSize)
+                        if ((bool)catname.IsBiggerOrLike40Foot)
                         {
                             basicprice = decimal.Multiply(prices.BasicFee, multiplyBigBoat);
                             hourpricebigboat = decimal.Multiply(prices.HourFee, multiplyhourBigBoat);
@@ -237,7 +236,10 @@ namespace BookingBoatSystem
                         hourprice = decimal.Multiply(prices.HourFee, hours);
                         return totalprice = decimal.Add(basicprice, hourprice);
 
-                    default: return totalprice;
+                    default:
+                        basicprice = prices.BasicFee;
+                        hourprice = decimal.Multiply(prices.HourFee, hours);
+                        return totalprice = decimal.Add(basicprice, hourprice);
                 }
             }
         }
