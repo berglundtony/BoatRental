@@ -28,7 +28,7 @@ namespace BookingBoatSystem.Tests
         public void ReturnBoatByBookingNumberTest()
         {
             var returnregistry = new Booking();
-            var latestrent = returnregistry.CheckLatestRentByPersonIdentityNumber("7103140435");
+            var latestrent = returnregistry.CheckLatestRentByPersonIdentityNumber("8909210033");
             bool IsSaved = false;
             IsSaved = returnregistry.ReturnBoatByBookingNumber(40);
             Assert.IsTrue(IsSaved);
@@ -48,13 +48,13 @@ namespace BookingBoatSystem.Tests
         }
 
         [TestMethod()]
-        public void GetThePriceOfTheBoutRentTest()
+        public void GetThePriceOfTheBoatRentTest()
         {
             var booking = new Booking();
             bool GotPrice = false;
             int BookingNumber;
             BookingNumber = booking.CheckLatestRentByPersonIdentityNumber("8909210033");
-            GotPrice = booking.GetThePriceOfTheBoutRent(BookingNumber);
+            GotPrice = booking.GetThePriceOfTheBoatRentForTesting(BookingNumber);
             Assert.IsTrue(GotPrice);
         }
     }

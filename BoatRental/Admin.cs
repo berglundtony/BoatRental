@@ -269,7 +269,7 @@ namespace BoatRental
 
                     Console.WriteLine("***************************************************************");
                     Console.WriteLine(" ID: " + r.BoatID);
-                    Console.WriteLine(" Name: " + r.BoatName);
+                    Console.WriteLine(" Båtnamn: " + r.BoatName);
                     Console.WriteLine(" Kategori: " + r.CatName);
 
                     if (r.CatName == "Segelbåt")

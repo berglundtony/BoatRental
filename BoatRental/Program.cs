@@ -29,7 +29,7 @@ namespace BoatRental
                 }
                 else if (option == 2)
                 {
-                    Rental.ShowBoats();
+                    Rental.OptionsRentalMenu();
                 }
                 else
                 {
@@ -59,7 +59,7 @@ namespace BoatRental
                 }
                 else if (option == 2)
                 {
-                    Rental.ShowBoats();
+                    Rental.OptionsRentalMenu();
                 }
                 else
                 {
