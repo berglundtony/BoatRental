@@ -273,7 +273,7 @@ namespace BookingBoatSystem
             return totalprice;
         }
         /// <summary>
-        /// 
+        /// This method returns the
         /// </summary>
         /// <param name="hours"></param>
         /// <param name="boatnumber"></param>
@@ -332,7 +332,12 @@ namespace BookingBoatSystem
                 }
             }
         }
-        public int GetNumerOfHoursForTheRental(int bookingnumber)
+        /// <summary>
+        /// This method returns the number of hours in which the boat rent has taken into account the requirement to round the hours upwards due to excessive minutes.
+        /// </summary>
+        /// <param name="bookingnumber"></param>
+        /// <returns></returns>
+        public int GetNumebrOfHoursForTheRental(int bookingnumber)
         {
             DateTime deliveryTime;
             DateTime? returnTime;

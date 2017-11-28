@@ -171,7 +171,7 @@ namespace BoatRental
                         Console.WriteLine(" Återlämningsdatum: " + therental.ReturnTime.Value.ToLongDateString());
                         if (therental.ReturnTime.HasValue)
                             Console.WriteLine(" Återlämningstid: " + therental.ReturnTime.Value.ToShortTimeString());
-                        Console.WriteLine(" Antal timmar: " + booking.GetNumerOfHoursForTheRental(bookingid));
+                        Console.WriteLine(" Antal timmar: " + booking.GetNumebrOfHoursForTheRental(bookingid));
                         Console.WriteLine(" Pris: " + booking.GetThePriceOfTheBoatRent(bookingid));
                     }
                 }
@@ -296,7 +296,7 @@ namespace BoatRental
                     {
                         Console.WriteLine(" Återlämningsdatum: " + therental.ReturnTime.Value.ToLongDateString());
                         Console.WriteLine(" Återlämningstid: " + therental.ReturnTime.Value.ToShortTimeString());
-                        Console.WriteLine(" Antal timmar: " + booking.GetNumerOfHoursForTheRental(bookingid));
+                        Console.WriteLine(" Antal timmar: " + booking.GetNumebrOfHoursForTheRental(bookingid));
                         Console.WriteLine(" Pris: " + booking.GetThePriceOfTheBoatRent(bookingid));
                     }   
                     else
