@@ -30,7 +30,7 @@ namespace BookingBoatSystem.Tests
             var returnregistry = new Booking();
             var latestrent = returnregistry.CheckLatestRentByPersonIdentityNumber("8909210033");
             bool IsSaved = false;
-            IsSaved = returnregistry.ReturnBoatByBookingNumber(40);
+            IsSaved = returnregistry.ReturnBoatByBookingNumber(latestrent);
             Assert.IsTrue(IsSaved);
         }
         /// <summary>
