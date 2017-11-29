@@ -14,8 +14,21 @@ namespace Data
     
     public partial class Price
     {
-        public int ID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Price()
+        {
+            this.Boats = new HashSet<Boat>();
+        }
+    
+        public int PriceID { get; set; }
         public decimal BasicFee { get; set; }
         public decimal HourFee { get; set; }
+        public Nullable<decimal> BasicPriceSmallBoatAlgorithm { get; set; }
+        public Nullable<decimal> BasicPriceBigBoatAlgorithm { get; set; }
+        public Nullable<decimal> HourPriceSmallBoatAlgorithm { get; set; }
+        public Nullable<decimal> HourPriceBigBoatAlgorithm { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Boat> Boats { get; set; }
     }
 }

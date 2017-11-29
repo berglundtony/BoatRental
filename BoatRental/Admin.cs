@@ -19,7 +19,7 @@ namespace BoatRental
 
             try
             {
-                using (var DB = new Data.BoatBookingSystemEntities())
+                using (var DB = new Data.BoatBookingSystemEntities1())
                 {
                     var categories = DB.Categories.ToList();
 
@@ -47,9 +47,7 @@ namespace BoatRental
             catch (Exception ex)
             {
                 Console.Write("Can't find categories because of, \"{0}\" .", ex.Message);
-
             }
-
             int option = 0;
 
             Console.WriteLine("================================");
@@ -144,7 +142,7 @@ namespace BoatRental
                             category.OverSizeFourty = false;
                         }
 
-                        using (var DB = new Data.BoatBookingSystemEntities())
+                        using (var DB = new Data.BoatBookingSystemEntities1())
                         {
                             try
                             {
@@ -199,7 +197,7 @@ namespace BoatRental
             Console.WriteLine("Vilket namn skall båten ha? ");
             boat.Name = Console.ReadLine();
 
-            using (var DB = new Data.BoatBookingSystemEntities())
+            using (var DB = new Data.BoatBookingSystemEntities1())
             {
                 var categories = DB.Categories.ToList();
 
@@ -225,7 +223,7 @@ namespace BoatRental
             }
             Console.WriteLine("\r\nVälj Kategori_id: 1, 2, 3 osv.");
 
-            using (var DB = new Data.BoatBookingSystemEntities())
+            using (var DB = new Data.BoatBookingSystemEntities1())
             {
                 if (int.TryParse(Console.ReadLine(), out output))
                 {
@@ -259,7 +257,7 @@ namespace BoatRental
         private static void ShowAllBoats()
         {
 
-            using (var DB = new Data.BoatBookingSystemEntities())
+            using (var DB = new Data.BoatBookingSystemEntities1())
             {
                 var boats = DB.Boats.Join(DB.Categories, cat => cat.CatID, boat => boat.CatID, (boat, cat) => new { BoatID = boat.BoatID, BoatName = boat.Name, CatName = cat.Name, SizeOver40Feets = cat.OverSizeFourty }).ToList();
                 Console.Clear();
@@ -353,7 +351,7 @@ namespace BoatRental
                     Console.WriteLine("================================");
                     Console.WriteLine("Ange grundpris: ");
 
-                    using (var DB = new Data.BoatBookingSystemEntities())
+                    using (var DB = new Data.BoatBookingSystemEntities1())
                     {
                         try
                         {
@@ -425,7 +423,7 @@ namespace BoatRental
 
         private static void ShowPrice()
         {
-            using (var DB = new Data.BoatBookingSystemEntities())
+            using (var DB = new Data.BoatBookingSystemEntities1())
             {
                 var prices = DB.Prices.ToList();
                 Console.Clear();
@@ -482,4 +480,5 @@ namespace BoatRental
         }
     }
 }
+
 

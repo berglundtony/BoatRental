@@ -50,61 +50,62 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Boat.cs">
-      <DependentUpon>RentalBoatDataModel.tt</DependentUpon>
+      <DependentUpon>BoatBookingSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BoatBookingSystemModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BoatBookingSystemModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BoatBookingSystemModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BoatBookingSystemModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BoatBookingSystemModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BoatBookingSystemModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Booking.cs">
-      <DependentUpon>RentalBoatDataModel.tt</DependentUpon>
+      <DependentUpon>BoatBookingSystemModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Category.cs">
-      <DependentUpon>RentalBoatDataModel.tt</DependentUpon>
+      <DependentUpon>BoatBookingSystemModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Price.cs">
-      <DependentUpon>RentalBoatDataModel.tt</DependentUpon>
+      <DependentUpon>BoatBookingSystemModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RentalBoatDataModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RentalBoatDataModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RentalBoatDataModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RentalBoatDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RentalBoatDataModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RentalBoatDataModel.edmx</DependentUpon>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>BoatBookingSystemModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="BackupDatabas\BoatBookingSystem.bak" />
-    <None Include="packages.config" />
-    <EntityDeploy Include="RentalBoatDataModel.edmx">
+    <EntityDeploy Include="BoatBookingSystemModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>RentalBoatDataModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>BoatBookingSystemModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="RentalBoatDataModel.edmx.diagram">
-      <DependentUpon>RentalBoatDataModel.edmx</DependentUpon>
+    <None Include="BoatBookingSystemModel.edmx.diagram">
+      <DependentUpon>BoatBookingSystemModel.edmx</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="RentalBoatDataModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>RentalBoatDataModel.edmx</DependentUpon>
-      <LastGenOutput>RentalBoatDataModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="RentalBoatDataModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>RentalBoatDataModel.edmx</DependentUpon>
-      <LastGenOutput>RentalBoatDataModel.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="BoatBookingSystemModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BoatBookingSystemModel.edmx</DependentUpon>
+      <LastGenOutput>BoatBookingSystemModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="BoatBookingSystemModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BoatBookingSystemModel.edmx</DependentUpon>
+      <LastGenOutput>BoatBookingSystemModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -36,9 +36,8 @@ namespace BookingBoatSystem.Tests
         /// <summary>
         /// Get the bookingnumber by the PersonIdentyNumber
         /// </summary>
-
         [TestMethod()]
-        public void ReturnBoatByPersonIdentityNumberTest()
+        public void GetBookingnumberByPersonIdentityNumberTest()
         {
             var returnregistry = new Booking();
             int expectedBookingNumber = returnregistry.LatestBookingNumberByPersonIdentityNumber("8909210033");

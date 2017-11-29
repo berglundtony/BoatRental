@@ -62,7 +62,7 @@ namespace BoatRental
 
             try
             {
-                using (var DB = new Data.BoatBookingSystemEntities())
+                using (var DB = new Data.BoatBookingSystemEntities1())
                 {
                     var boats = DB.Boats.Join(DB.Categories, boat => boat.CatID, cat => cat.CatID, (boat, cat) => new { BoatID = boat.BoatID, BoatName = boat.Name, CatName = cat.Name, SizeOver40Feets = cat.OverSizeFourty }).ToList();
                     var bookings = DB.Bookings.ToList();
@@ -138,7 +138,7 @@ namespace BoatRental
                 Console.WriteLine("** Båten är nu återlämnad **");
                 try
                 {
-                    using (var DB = new Data.BoatBookingSystemEntities())
+                    using (var DB = new Data.BoatBookingSystemEntities1())
                     {
                         var therental = (DB.Bookings.Join(DB.Boats, rental => rental.BoatID, boat => boat.BoatID, (rental, boat) =>
                         new { BookingNumber = rental.BookingNumber, PersonNumber = rental.PersonNumber, DeliveryTime = rental.DeliveyDateTime, ReturnTime = rental.ReturnDateTime, BoatName = boat.Name, BoatID = boat.BoatID, CategoryID = boat.CatID }))
@@ -193,7 +193,7 @@ namespace BoatRental
             int bookingnumber;
             try
             {
-                using (var DB = new Data.BoatBookingSystemEntities())
+                using (var DB = new Data.BoatBookingSystemEntities1())
                 {
                     var bookings = DB.Bookings.ToList();
                     Console.Clear();
@@ -261,7 +261,7 @@ namespace BoatRental
             var booking = new BookingBoatSystem.Booking();
             try
             {
-                using (var DB = new Data.BoatBookingSystemEntities())
+                using (var DB = new Data.BoatBookingSystemEntities1())
                 {
                     var therental = (DB.Bookings.Join(DB.Boats, rental => rental.BoatID, boat => boat.BoatID, (rental, boat) =>
                     new { BookingNumber = rental.BookingNumber, PersonNumber = rental.PersonNumber, DeliveryTime = rental.DeliveyDateTime, ReturnTime = rental.ReturnDateTime, BoatName = boat.Name, BoatID = boat.BoatID, CategoryID = boat.CatID }))

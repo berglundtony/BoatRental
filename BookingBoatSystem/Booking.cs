@@ -34,7 +34,7 @@ namespace BookingBoatSystem
             var rentopportunity = new Data.Booking();
             try
             {
-                using (var DB = new Data.BoatBookingSystemEntities())
+                using (var DB = new Data.BoatBookingSystemEntities1())
                 {
                     rentopportunity.PersonNumber = personnumber;
                     rentopportunity.BoatID = boatid;
@@ -61,7 +61,7 @@ namespace BookingBoatSystem
         {
             try
             {
-                using (var DB = new Data.BoatBookingSystemEntities())
+                using (var DB = new Data.BoatBookingSystemEntities1())
                 {
                     var booking = DB.Bookings.FirstOrDefault(x => x.BookingNumber.Equals(bookingnumber));
 
@@ -90,7 +90,7 @@ namespace BookingBoatSystem
         {
             try
             {
-                using (var DB = new Data.BoatBookingSystemEntities())
+                using (var DB = new Data.BoatBookingSystemEntities1())
                 {
 
                     var bookings = (from b in DB.Bookings
@@ -131,7 +131,7 @@ namespace BookingBoatSystem
         {
             try
             {
-                using (var DB = new Data.BoatBookingSystemEntities())
+                using (var DB = new Data.BoatBookingSystemEntities1())
                 {
                     var bookings = DB.Bookings
                     .Where(b => b.PersonNumber == personidentitynumber).OrderByDescending(b => b.DeliveyDateTime)
@@ -156,22 +156,22 @@ namespace BookingBoatSystem
             var bookingnumberlist = new List<int>();
             try
             {
-                using (var DB = new Data.BoatBookingSystemEntities())
+                using (var DB = new Data.BoatBookingSystemEntities1())
                 {
                     var bookings = DB.Bookings
                     .Where(b => b.PersonNumber == personidentitynumber).OrderByDescending(b => b.DeliveyDateTime)
                     .Select(b => b.BookingNumber)
                     .ToList();
 
-                    foreach(var booking in bookings)
+                    foreach (var booking in bookings)
                     {
                         bookingnumberlist.Add(booking);
                     }
-                } 
+                }
             }
             catch (Exception ex)
             {
-                string.Format("We could not find your rent information because of \"{0}\" .", ex.Message);    
+                string.Format("We could not find your rent information because of \"{0}\" .", ex.Message);
             }
             return bookingnumberlist;
         }
@@ -190,7 +190,7 @@ namespace BookingBoatSystem
             int boatnumber;
             try
             {
-                using (var DB = new Data.BoatBookingSystemEntities())
+                using (var DB = new Data.BoatBookingSystemEntities1())
                 {
                     var booking = DB.Bookings.FirstOrDefault(x => x.BookingNumber.Equals(bookingnumber));
 
@@ -240,7 +240,7 @@ namespace BookingBoatSystem
             int boatnumber;
             try
             {
-                using (var DB = new Data.BoatBookingSystemEntities())
+                using (var DB = new Data.BoatBookingSystemEntities1())
                 {
                     var booking = DB.Bookings.FirstOrDefault(x => x.BookingNumber.Equals(bookingnumber));
 
@@ -281,7 +281,7 @@ namespace BookingBoatSystem
 
         private decimal GetRentalPrice(int hours, int boatnumber)
         {
-            using (var DB = new Data.BoatBookingSystemEntities())
+            using (var DB = new Data.BoatBookingSystemEntities1())
             {
                 var category = DB.Bookings.Join(DB.Boats, booking =>
                 booking.BoatID,
@@ -346,7 +346,7 @@ namespace BookingBoatSystem
             int hours = 0;
             try
             {
-                using (var DB = new Data.BoatBookingSystemEntities())
+                using (var DB = new Data.BoatBookingSystemEntities1())
                 {
                     var booking = DB.Bookings.FirstOrDefault(x => x.BookingNumber.Equals(bookingnumber));
 
@@ -366,7 +366,7 @@ namespace BookingBoatSystem
                             hours += 1;
                     }
                 }
-        
+
             }
             catch (Exception ex)
             {
@@ -374,6 +374,6 @@ namespace BookingBoatSystem
             }
             return hours;
         }
-         
+
     }
 }
