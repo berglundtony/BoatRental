@@ -125,7 +125,7 @@ namespace BoatRental
             Console.Clear();
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("******* Återlämning av av båt ********");
+            Console.WriteLine("******* Återlämning av båt ********");
             Console.WriteLine();
             Console.Write(" Ange bokningsnummer: ");
             var bookingnumber = Console.ReadLine();
@@ -200,11 +200,23 @@ namespace BoatRental
                     Console.WriteLine();
                     Console.WriteLine();
                     Console.WriteLine("******* Kolla bokningsnummret ********");
+                    Console.WriteLine();
                     Console.Write(" Ange personnummer: ");
                     var personnumber = Console.ReadLine();
-                    bookingnumber = booking.LatestBookingNumberByPersonIdentityNumber(personnumber);
-                    Console.WriteLine();
-                    Console.WriteLine(" Ditt senaste bokniningsnummer är: " + bookingnumber);
+                    if(personnumber.Count() == 10)
+                    {
+                        bookingnumber = booking.LatestBookingNumberByPersonIdentityNumber(personnumber);
+                        Console.WriteLine();
+                        Console.WriteLine(" Ditt senaste bokniningsnummer är: " + bookingnumber);
+                    }
+                    else
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine(" Personnumret skall vara 10 siffror.");
+                        Console.WriteLine(" Försök igen - tryck valfri tangent");
+                        Console.ReadKey();
+                        CheckBookingNumber();
+                    }
                 }
             }
             catch (Exception ex)
@@ -229,14 +241,24 @@ namespace BoatRental
                 Console.WriteLine();
                 Console.Write(" Ange personnummer: ");
                 var personnumber = Console.ReadLine();
-                bookingnumbers = booking.GetAllYourBookingsByPersonIdentityNumber(personnumber);
-                Console.WriteLine();
-                Console.Write(" Dina boknningsnummer är: ");
-                foreach (var item in bookingnumbers)
+                if(personnumber.Count() == 10)
                 {
-                    Console.Write(item + ",");
+                    bookingnumbers = booking.GetAllYourBookingsByPersonIdentityNumber(personnumber);
+                    Console.WriteLine();
+                    Console.Write(" Dina bokningsnummer är: ");
+                    foreach (var item in bookingnumbers)
+                    {
+                        Console.Write(item + ",");
+                    }
                 }
-
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(" Personnumret skall vara 10 siffror.");
+                    Console.WriteLine(" Försök igen - tryck valfri tangent");
+                    Console.ReadKey();
+                    CheckAllYourRentals();
+                }        
             }
             catch (Exception ex)
             {
@@ -297,8 +319,6 @@ namespace BoatRental
                         }
                     }
 
-
-                Console.WriteLine(" Personnummer: " + therental.PersonNumber);
                 Console.WriteLine(" Startdatum: " + therental.DeliveryTime.ToLongDateString());
                 Console.WriteLine(" Startid: " + therental.DeliveryTime.ToShortTimeString());
 

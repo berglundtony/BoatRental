@@ -351,6 +351,7 @@ namespace BoatRental
                     Console.WriteLine("================================");
                     Console.WriteLine("Lägg till nytt pris");
                     Console.WriteLine("================================");
+                    Console.WriteLine();
                     Console.WriteLine("Ange grundpris: ");
 
                     using (var DB = new Data.BoatBookingSystemEntities1())
@@ -367,6 +368,33 @@ namespace BoatRental
                             {
                                 price.HourFee = output;
                             }
+                            Console.WriteLine("================================");
+                            Console.WriteLine("Lägg till decimaltal för multipliceringssats för stor båt.");
+                            Console.WriteLine("================================");
+                            Console.WriteLine();
+                            Console.WriteLine("Ange hur mycket grundpriset på en båt över eller lika med 40 fot skall multipliceras med: ");
+                            Console.WriteLine();
+                            if (decimal.TryParse(Console.ReadLine(), out output))
+                            {
+                                price.BasicPriceBigBoatAlgorithm = output;
+                            }
+                            Console.WriteLine("Ange hur mycket timpriset på en båt över eller lika med 40 fot skall multipliceras med: ");
+                            Console.WriteLine();
+                            if (decimal.TryParse(Console.ReadLine(), out output))
+                            {
+                                price.HourPriceBigBoatAlgorithm = output;
+                            }
+                            Console.WriteLine("================================");
+                            Console.WriteLine("Lägg till decimaltal för multipliceringssats för liten båt.");
+                            Console.WriteLine("================================");
+                            Console.WriteLine();
+                            Console.WriteLine("Ange hur mycket grundpriset på en båt under 40 fot skall multipliceras med: ");
+                            Console.WriteLine();
+                            if (decimal.TryParse(Console.ReadLine(), out output))
+                            {
+                                price.BasicPriceSmallBoatAlgorithm = output;
+                            }
+                            Console.WriteLine("Ange hur mycket timpriset på en båt under 40 fot skall multipliceras med: ");
                             DB.Prices.Add(price);
                             DB.SaveChanges();
                         }
