@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +11,9 @@ namespace BookingBoatSystem
 {
     public class Booking
     {
-        enum CategoryName { Jolle, Segelbåt };
+        [Serializable]
+        enum CategoryName { JOLLE, SEGELBÅT };
+
         static CategoryName categoryname;
         List<int> _bookingnumbers = new List<int>();
         int bookingnumber;
@@ -299,13 +303,19 @@ namespace BookingBoatSystem
 
                     }).FirstOrDefault();
 
+                var categoryvalues = DB.Categories.ToList();
+
                 var prices = (from p in DB.Prices select p).FirstOrDefault();
 
-                categoryname = (CategoryName)Enum.Parse(typeof(CategoryName), catname.CategoryName.ToString());
+                // Here we create a dynamic enum and gets the values from it.
+                Type enumValues = GetValuesForCategoryNameEnum();
+                string[] catlist = enumValues.GetEnumNames();
+
+                categoryname = (CategoryName)Enum.Parse(typeof(CategoryName), catname.CategoryName.ToUpper().ToString());
 
                 switch (categoryname)
                 {
-                    case Booking.CategoryName.Segelbåt:
+                    case Booking.CategoryName.SEGELBÅT:
                         if ((bool)catname.IsBiggerOrLike40Foot)
                         {
                             basicprice = decimal.Multiply(prices.BasicFee, multiplyBigBoat);
@@ -320,12 +330,32 @@ namespace BookingBoatSystem
                             hourprice = decimal.Multiply(hourpricesmallboat, hours);
                             return totalprice = decimal.Add(basicprice, hourprice);
                         }
-                    case Booking.CategoryName.Jolle:
+                    case Booking.CategoryName.JOLLE:
                         basicprice = prices.BasicFee;
                         hourprice = decimal.Multiply(prices.HourFee, hours);
                         return totalprice = decimal.Add(basicprice, hourprice);
 
                     default:
+                        for (int i = 0; i < catlist.Count(); i++)
+                        {
+                            if (catlist[i].Contains(categoryname.ToString())){
+                                if ((bool)catname.IsBiggerOrLike40Foot)
+                                {
+                                    basicprice = decimal.Multiply(prices.BasicFee, multiplyBigBoat);
+                                    hourpricebigboat = decimal.Multiply(prices.HourFee, multiplyhourBigBoat);
+                                    hourprice = decimal.Multiply(hourpricebigboat, hours);
+                                    return totalprice = decimal.Add(basicprice, hourprice);
+                                }
+                                else
+                                {
+                                    basicprice = decimal.Multiply(prices.BasicFee, multiplySmallBoat);
+                                    hourpricesmallboat = decimal.Multiply(prices.HourFee, multiplyhourSmallBoat);
+                                    hourprice = decimal.Multiply(hourpricesmallboat, hours);
+                                    return totalprice = decimal.Add(basicprice, hourprice);
+                                }
+                            }
+                        
+                        }
                         basicprice = prices.BasicFee;
                         hourprice = decimal.Multiply(prices.HourFee, hours);
                         return totalprice = decimal.Add(basicprice, hourprice);
@@ -375,5 +405,33 @@ namespace BookingBoatSystem
             return hours;
         }
 
+        public Type GetValuesForCategoryNameEnum()
+        {
+            var _list = new List<Data.Category>();
+            string CategoryName = "CategoryName";
+            using (var DB = new Data.BoatBookingSystemEntities1())
+            {
+                var categoryvalues = DB.Categories.ToList();
+
+                //    Create Base Assembly Objects
+                AppDomain appDomain = AppDomain.CurrentDomain;
+                AssemblyName asmName = new AssemblyName(CategoryName);
+                AssemblyBuilder asmBuilder = appDomain.
+                  DefineDynamicAssembly(asmName, AssemblyBuilderAccess.Run);
+
+                //    Create Module and Enumeration Builder Objects
+                ModuleBuilder modBuilder = asmBuilder.
+                  DefineDynamicModule(CategoryName + "_module");
+                EnumBuilder enumBuilder = modBuilder.
+                  DefineEnum(CategoryName, TypeAttributes.Public, typeof(int));
+
+                foreach(Data.Category catobj in categoryvalues)
+                {
+                    enumBuilder.DefineLiteral(catobj.Name.ToUpper(), catobj.CatID);
+                }
+
+                return enumBuilder.CreateType();
+            }       
+        }
     }
 }

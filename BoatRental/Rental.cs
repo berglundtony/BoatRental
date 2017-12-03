@@ -11,7 +11,7 @@ namespace BoatRental
 {
     public static class Rental
     {
-        enum CategoryName { Segelbåt, Jolle };
+        enum CategoryName { SEGELBÅT, JOLLE };
 
         public static void OptionsRentalMenu()
         {
@@ -77,7 +77,7 @@ namespace BoatRental
                             Console.WriteLine(" Båtnamn: " + r.BoatName);
                             Console.Write(" Kategori: " + r.CatName);
 
-                            if (r.CatName == CategoryName.Segelbåt.ToString())
+                            if (r.CatName.ToUpper() == CategoryName.SEGELBÅT.ToString())
                             {
                                 if (r.SizeOver40Feets == true)
                                 {
@@ -153,7 +153,7 @@ namespace BoatRental
                         Console.WriteLine(" BåtNamn: " + therental.BoatName);
                         Console.WriteLine(" Kategori: " + category.CategoryName);
 
-                        if (category.CategoryName == CategoryName.Segelbåt.ToString())
+                        if (category.CategoryName.ToUpper() == CategoryName.SEGELBÅT.ToString())
                         {
                             if (category.BoatSize == true)
                             {
@@ -276,8 +276,17 @@ namespace BoatRental
                     Console.WriteLine(" BåtNamn: " + therental.BoatName);
                     Console.Write(" Kategori: " + category.CategoryName);
 
-                    if (category.CategoryName == CategoryName.Segelbåt.ToString())
+
+
+                    Type enumValues = booking.GetValuesForCategoryNameEnum();
+
+                    string[] catlist = enumValues.GetEnumNames();
+
+
+                    if (category.CategoryName.ToUpper() == CategoryName.SEGELBÅT.ToString())
                     {
+
+
                         if (category.BoatSize == true)
                         {
                             Console.WriteLine(" över eller lika med 40 tum.");
@@ -288,29 +297,30 @@ namespace BoatRental
                         }
                     }
 
-                    Console.WriteLine(" Personnummer: " + therental.PersonNumber);
-                    Console.WriteLine(" Startdatum: " + therental.DeliveryTime.ToLongDateString());
-                    Console.WriteLine(" Startid: " + therental.DeliveryTime.ToShortTimeString());
-                  
-                    if (therental.ReturnTime.HasValue)
-                    {
-                        Console.WriteLine(" Återlämningsdatum: " + therental.ReturnTime.Value.ToLongDateString());
-                        Console.WriteLine(" Återlämningstid: " + therental.ReturnTime.Value.ToShortTimeString());
-                        Console.WriteLine(" Antal timmar: " + booking.GetNumebrOfHoursForTheRental(bookingid));
-                        Console.WriteLine(" Pris: " + booking.GetThePriceOfTheBoatRent(bookingid));
-                    }   
-                    else
-                    {
-                        Console.WriteLine(" Båten är ännu inte tillbakalämnad");
-                    }
-                    
+
+                Console.WriteLine(" Personnummer: " + therental.PersonNumber);
+                Console.WriteLine(" Startdatum: " + therental.DeliveryTime.ToLongDateString());
+                Console.WriteLine(" Startid: " + therental.DeliveryTime.ToShortTimeString());
+
+                if (therental.ReturnTime.HasValue)
+                {
+                    Console.WriteLine(" Återlämningsdatum: " + therental.ReturnTime.Value.ToLongDateString());
+                    Console.WriteLine(" Återlämningstid: " + therental.ReturnTime.Value.ToShortTimeString());
+                    Console.WriteLine(" Antal timmar: " + booking.GetNumebrOfHoursForTheRental(bookingid));
+                    Console.WriteLine(" Pris: " + booking.GetThePriceOfTheBoatRent(bookingid));
                 }
+                else
+                {
+                    Console.WriteLine(" Båten är ännu inte tillbakalämnad");
+                }
+
+            }
             }
             catch (Exception ex)
             {
                 Console.Write("The return rental could't be returned because of \"{0}\" .", ex.Message);
             }
-        }
+}
     }
 }
 
