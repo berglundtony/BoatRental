@@ -12,11 +12,12 @@ namespace BoatRental
         public static void ShowMenu()
         {
             int option = 0;
+            Console.Clear();
             Console.WriteLine(" ================================");
             Console.WriteLine(" Välj tjänst");
             Console.WriteLine(" ================================");
-            Console.WriteLine(" 1. Lägg till kategori");
-            Console.WriteLine(" 2. Se kategorier");
+            Console.WriteLine(" 1. Se kategorier");
+            Console.WriteLine(" 2. Lägg till kategori");
             Console.WriteLine(" 3. Lägg till ny båt");
             Console.WriteLine(" 4. Se alla båtar");
             Console.WriteLine(" 5. Lägg till pris");
@@ -113,11 +114,12 @@ namespace BoatRental
             var category = new Data.Category();
 
             {
-                Console.WriteLine("Exit: j/n");
+                Console.WriteLine(" Är det säkert att du vill lägga till en ny kategori?");
+                Console.WriteLine("Avsluta: j/n");
                 string exit = Console.ReadLine();
                 if (exit == "j")
                 {
-                    return;
+                    ShowMenu();
                 }
                 else
                 {

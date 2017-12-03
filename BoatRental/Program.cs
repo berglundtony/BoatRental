@@ -9,8 +9,6 @@ namespace BoatRental
 {
     class Program
     {
-        //public static object HttpContext { get; private set; }
-
         static void Main(string[] args)
         {
             int option = 0;
@@ -26,7 +24,7 @@ namespace BoatRental
 
                 if (option == 1)
                 {
-                    Admin.CreateCategories();
+                    Admin.ShowMenu();
                 }
                 else if (option == 2)
                 {
@@ -55,7 +53,7 @@ namespace BoatRental
 
                 if (option == 1)
                 {
-                    Admin.CreateCategories();
+                    Admin.ShowMenu();
 
                 }
                 else if (option == 2)
