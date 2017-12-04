@@ -15,25 +15,38 @@ namespace BoatRental
             while (option != 3)
             {
                 Console.Clear();
+                Console.WriteLine();
                 Console.WriteLine("Välj ett alternativ (skriv 1, 2 eller 3 och tryck enter):\r\n ");
                 Console.WriteLine("1. Välj admin");
                 Console.WriteLine("2. Välj bokning");
                 Console.WriteLine("3. Avsluta\r\n");
 
-                option = int.Parse(Console.ReadLine());
 
-                if (option == 1)
+                if (int.TryParse(Console.ReadLine(), out option))
                 {
-                    Admin.ShowMenu();
-                }
-                else if (option == 2)
-                {
-                    Rental.OptionsRentalMenu();
+                    if (option == 1)
+                    {
+                        Admin.ShowMenu();
+                    }
+                    else if (option == 2)
+                    {
+                        Rental.OptionsRentalMenu();
+                    }
+                    else
+                    {
+                        return;
+                    }
+
                 }
                 else
                 {
-                    return;
+                    Console.WriteLine("Valet måste vara en siffra");
+                    Console.WriteLine();
+                    Console.WriteLine(" Återgå till meny - tryck valfri tangent");
+                    Console.ReadKey();
                 }
+
+
             }
             return;
         }
@@ -44,28 +57,39 @@ namespace BoatRental
             while (option != 3)
             {
                 Console.Clear();
+                Console.WriteLine();
                 Console.WriteLine("Välj ett alternativ (skriv 1, 2 eller 3 ocg tryck enter):\r\n ");
                 Console.WriteLine("1. Välj admin");
                 Console.WriteLine("2. Välj bokning");
                 Console.WriteLine("3. Avsluta\r\n");
 
-                option = int.Parse(Console.ReadLine());
 
-                if (option == 1)
+                if (int.TryParse(Console.ReadLine(), out option))
                 {
-                    Admin.ShowMenu();
+                    if (option == 1)
+                    {
+                        Admin.ShowMenu();
+                    }
+                    else if (option == 2)
+                    {
+                        Rental.OptionsRentalMenu();
+                    }
+                    else
+                    {
+                        System.Environment.Exit(-1);
+                    }
 
-                }
-                else if (option == 2)
-                {
-                    Rental.OptionsRentalMenu();
                 }
                 else
                 {
-                    System.Environment.Exit(-1);
+                    Console.WriteLine("Valet måste vara en siffra");
+                    Console.WriteLine();
+                    Console.WriteLine(" Återgå till meny - tryck valfri tangent");
+                    Console.ReadKey();
                 }
+
             }
-            System.Environment.Exit(-1);
+ 
         }
 
     }

@@ -13,7 +13,6 @@ namespace BookingBoatSystem
     {
         [Serializable]
         enum CategoryName { JOLLE, SEGELBÅT };
-
         static CategoryName categoryname;
         List<int> _bookingnumbers = new List<int>();
         int bookingnumber;
@@ -22,10 +21,10 @@ namespace BookingBoatSystem
         decimal hourpricesmallboat;
         decimal hourpricebigboat;
         decimal totalprice;
-        decimal multiplyBigBoat = 1.5m;
-        decimal multiplySmallBoat = 1.2m;
-        decimal multiplyhourBigBoat = 1.4m;
-        decimal multiplyhourSmallBoat = 1.3m;
+        decimal multiplyBasicBigBoat;
+        decimal multiplyBasicSmallBoat;
+        decimal multiplyHourBigBoat;
+        decimal multiplyHourSmallBoat;
 
         /// <summary>
         /// Here the rent of the boat is registred in the database
@@ -285,82 +284,102 @@ namespace BookingBoatSystem
 
         private decimal GetRentalPrice(int hours, int boatnumber)
         {
+            List<Data.Category> _categorylist = new List<Data.Category>();
+
             using (var DB = new Data.BoatBookingSystemEntities1())
             {
-                var category = DB.Bookings.Join(DB.Boats, booking =>
+                var bookingboat = DB.Bookings.Join(DB.Boats, booking =>
                 booking.BoatID,
                 boat => boat.BoatID,
-                (booking, boat) => new { Booking = booking, Boat = boat, CategoryID = boat.CatID })
+                (booking, boat) => new {
+                    Booking = booking,
+                    Boat = boat,
+                    CategoryID = boat.CatID,
+                    Category = boat.Category.Name,
+                    IsBiggerOrLike40foot = boat.Category.OverSizeFourty,
+                    PriceID = boat.PriceID,
+                    BasicFee = boat.Price.BasicFee,
+                    BasicSmallBoatMultiply = boat.Price.BasicPriceSmallBoatAlgorithm,
+                    BasicBigBoatMultiply = boat.Price.BasicPriceBigBoatAlgorithm,
+                    HourFee = boat.Price.HourFee,
+                    HourSmallBoatMultiply = boat.Price.HourPriceSmallBoatAlgorithm,
+                    HourBigBoatMultiply = boat.Price.HourPriceBigBoatAlgorithm
+                })
                 .Where(boat => boat.Boat.BoatID.Equals(boatnumber)).FirstOrDefault();
 
-                var catname = DB.Categories.Where(c => c.CatID == category.CategoryID)
-                    .Include(n => n.Name)
-                    .Include(s => s.OverSizeFourty)
-                    .Select(c => new
-                    {
-                        CategoryName = c.Name,
-                        IsBiggerOrLike40Foot = c.OverSizeFourty
+                multiplyBasicBigBoat = (decimal)bookingboat.BasicBigBoatMultiply;
+                multiplyBasicSmallBoat = (decimal)bookingboat.BasicSmallBoatMultiply;
 
-                    }).FirstOrDefault();
+                multiplyHourBigBoat = (decimal)bookingboat.HourBigBoatMultiply;
+                multiplyHourSmallBoat = (decimal)bookingboat.HourSmallBoatMultiply;
 
-                var categoryvalues = DB.Categories.ToList();
+                //get the list of all category values
+                _categorylist = GetValuesForCategoryName();
 
-                var prices = (from p in DB.Prices select p).FirstOrDefault();
-
-                // Here we create a dynamic enum and gets the values from it.
-                Type enumValues = GetValuesForCategoryNameEnum();
-                string[] catlist = enumValues.GetEnumNames();
-
-                categoryname = (CategoryName)Enum.Parse(typeof(CategoryName), catname.CategoryName.ToUpper().ToString());
-
-                switch (categoryname)
+                if (bookingboat.Category.ToUpper() == "JOLLE" || bookingboat.Category.ToUpper() == "SEGELBÅT")
                 {
-                    case Booking.CategoryName.SEGELBÅT:
-                        if ((bool)catname.IsBiggerOrLike40Foot)
-                        {
-                            basicprice = decimal.Multiply(prices.BasicFee, multiplyBigBoat);
-                            hourpricebigboat = decimal.Multiply(prices.HourFee, multiplyhourBigBoat);
-                            hourprice = decimal.Multiply(hourpricebigboat, hours);
-                            return totalprice = decimal.Add(basicprice, hourprice);
-                        }
-                        else
-                        {
-                            basicprice = decimal.Multiply(prices.BasicFee, multiplySmallBoat);
-                            hourpricesmallboat = decimal.Multiply(prices.HourFee, multiplyhourSmallBoat);
-                            hourprice = decimal.Multiply(hourpricesmallboat, hours);
-                            return totalprice = decimal.Add(basicprice, hourprice);
-                        }
-                    case Booking.CategoryName.JOLLE:
-                        basicprice = prices.BasicFee;
-                        hourprice = decimal.Multiply(prices.HourFee, hours);
-                        return totalprice = decimal.Add(basicprice, hourprice);
+                    categoryname = (CategoryName)Enum.Parse(typeof(CategoryName), bookingboat.Category.ToUpper().ToString());
 
-                    default:
-                        for (int i = 0; i < catlist.Count(); i++)
-                        {
-                            if (catlist[i].Contains(categoryname.ToString())){
-                                if ((bool)catname.IsBiggerOrLike40Foot)
-                                {
-                                    basicprice = decimal.Multiply(prices.BasicFee, multiplyBigBoat);
-                                    hourpricebigboat = decimal.Multiply(prices.HourFee, multiplyhourBigBoat);
-                                    hourprice = decimal.Multiply(hourpricebigboat, hours);
-                                    return totalprice = decimal.Add(basicprice, hourprice);
-                                }
-                                else
-                                {
-                                    basicprice = decimal.Multiply(prices.BasicFee, multiplySmallBoat);
-                                    hourpricesmallboat = decimal.Multiply(prices.HourFee, multiplyhourSmallBoat);
-                                    hourprice = decimal.Multiply(hourpricesmallboat, hours);
-                                    return totalprice = decimal.Add(basicprice, hourprice);
-                                }
+                    switch (categoryname)
+                    {
+                        case Booking.CategoryName.SEGELBÅT:
+                            if ((bool)bookingboat.IsBiggerOrLike40foot)
+                            {
+                                basicprice = decimal.Multiply(bookingboat.BasicFee, multiplyBasicBigBoat);
+                                hourpricebigboat = decimal.Multiply(bookingboat.HourFee, multiplyHourBigBoat);
+                                hourprice = decimal.Multiply(hourpricebigboat, hours);
+                                totalprice = decimal.Add(basicprice, hourprice);
+                                break;
                             }
-                        
-                        }
-                        basicprice = prices.BasicFee;
-                        hourprice = decimal.Multiply(prices.HourFee, hours);
-                        return totalprice = decimal.Add(basicprice, hourprice);
+                            else
+                            {
+                                basicprice = decimal.Multiply(bookingboat.BasicFee, multiplyBasicSmallBoat);
+                                hourpricesmallboat = decimal.Multiply(bookingboat.HourFee, multiplyHourSmallBoat);
+                                hourprice = decimal.Multiply(hourpricesmallboat, hours);
+                                totalprice = decimal.Add(basicprice, hourprice);
+                                break;
+                            }
+                        case Booking.CategoryName.JOLLE:
+                            basicprice = bookingboat.BasicFee;
+                            hourprice = decimal.Multiply(bookingboat.HourFee, hours);
+                            totalprice = decimal.Add(basicprice, hourprice);
+                            break;
+
+                        default:
+                            basicprice = bookingboat.BasicFee;
+                            hourprice = decimal.Multiply(bookingboat.HourFee, hours);
+                            totalprice = decimal.Add(basicprice, hourprice);
+                            break;
+                    }
                 }
+                else
+                {
+                    foreach (var item in _categorylist)
+                    {
+                        if (item.Name == bookingboat.Category)
+                        {
+                            if ((bool)bookingboat.IsBiggerOrLike40foot)
+                            {
+                                basicprice = decimal.Multiply(bookingboat.BasicFee, multiplyBasicBigBoat);
+                                hourpricebigboat = decimal.Multiply(bookingboat.HourFee, multiplyHourBigBoat);
+                                hourprice = decimal.Multiply(hourpricebigboat, hours);
+                                totalprice = decimal.Add(basicprice, hourprice);
+                            }
+                            else
+                            {
+                                basicprice = decimal.Multiply(bookingboat.BasicFee, multiplyBasicSmallBoat);
+                                hourpricesmallboat = decimal.Multiply(bookingboat.HourFee, multiplyHourSmallBoat);
+                                hourprice = decimal.Multiply(hourpricesmallboat, hours);
+                                totalprice = decimal.Add(basicprice, hourprice);
+                            }
+                        }
+    
+                    }
+                  
+                }
+              
             }
+            return Math.Round(totalprice, 2);
         }
         /// <summary>
         /// This method returns the number of hours in which the boat rent has taken into account the requirement to round the hours upwards due to excessive minutes.
@@ -405,33 +424,21 @@ namespace BookingBoatSystem
             return hours;
         }
 
-        public Type GetValuesForCategoryNameEnum()
+        public List<Data.Category> GetValuesForCategoryName()
         {
-            var _list = new List<Data.Category>();
-            string CategoryName = "CategoryName";
+            var catlist = new List<Data.Category>();
+
             using (var DB = new Data.BoatBookingSystemEntities1())
             {
                 var categoryvalues = DB.Categories.ToList();
 
-                //    Create Base Assembly Objects
-                AppDomain appDomain = AppDomain.CurrentDomain;
-                AssemblyName asmName = new AssemblyName(CategoryName);
-                AssemblyBuilder asmBuilder = appDomain.
-                  DefineDynamicAssembly(asmName, AssemblyBuilderAccess.Run);
-
-                //    Create Module and Enumeration Builder Objects
-                ModuleBuilder modBuilder = asmBuilder.
-                  DefineDynamicModule(CategoryName + "_module");
-                EnumBuilder enumBuilder = modBuilder.
-                  DefineEnum(CategoryName, TypeAttributes.Public, typeof(int));
-
-                foreach(Data.Category catobj in categoryvalues)
+                foreach (var cat in categoryvalues)
                 {
-                    enumBuilder.DefineLiteral(catobj.Name.ToUpper(), catobj.CatID);
+                    catlist.Add(new Data.Category { Name = cat.Name, OverSizeFourty = cat.OverSizeFourty });
                 }
 
-                return enumBuilder.CreateType();
-            }       
+                return catlist;
+            }
         }
     }
 }

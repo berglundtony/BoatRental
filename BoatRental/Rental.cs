@@ -28,33 +28,42 @@ namespace BoatRental
             Console.WriteLine("4. Se status på dina bokningar");
             Console.WriteLine("5. Avsluta\r\n");
 
-            option = int.Parse(Console.ReadLine());
-
-            while (option != 6 && option != 0)
+            if (int.TryParse(Console.ReadLine(), out option))
             {
-                if (option == 1)
+
+                while (option != 6 && option != 0)
                 {
-                    RentABoat();
-                }
-                else if (option == 2)
-                {
-                    ReturnBoat();
-                }
-                else if (option == 3)
-                {
-                    CheckBookingNumber();
-                }
-                else if (option == 4)
-                {
-                    CheckAllYourRentals();
-                }
-                else
-                {
-                    return;
+                    if (option == 1)
+                    {
+                        RentABoat();
+                    }
+                    else if (option == 2)
+                    {
+                        ReturnBoat();
+                    }
+                    else if (option == 3)
+                    {
+                        CheckBookingNumber();
+                    }
+                    else if (option == 4)
+                    {
+                        CheckAllYourRentals();
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
             }
+            else
+            {
+                Console.WriteLine("Valet måste vara en siffra");
+                Console.WriteLine();
+                Console.WriteLine(" Återgå till meny - tryck valfri tangent");
+                Console.ReadKey();
+                OptionsRentalMenu();
+            }
         }
-
         private static void RentABoat()
         {
             var booking = new BookingBoatSystem.Booking();
@@ -95,7 +104,7 @@ namespace BoatRental
                     Console.WriteLine("******* Uthyrning av båt ********");
                     Console.Write(" Ange båtnummer: ");
                     var boatnumber = Console.ReadLine();
-                    Console.Write(" Ange personnummer: ");
+                    Console.Write(" Ange personnummer (10 siffror): ");
                     var personnumber = Console.ReadLine();
                     int boatid;
                     if (int.TryParse(boatnumber, out boatid))
@@ -151,7 +160,7 @@ namespace BoatRental
                         Console.WriteLine();
                         Console.WriteLine(" Båtnummer: " + therental.BoatID);
                         Console.WriteLine(" BåtNamn: " + therental.BoatName);
-                        Console.WriteLine(" Kategori: " + category.CategoryName);
+                        Console.Write(" Kategori: " + category.CategoryName);
 
                         if (category.CategoryName.ToUpper() == CategoryName.SEGELBÅT.ToString())
                         {
@@ -203,7 +212,7 @@ namespace BoatRental
                     Console.WriteLine();
                     Console.Write(" Ange personnummer: ");
                     var personnumber = Console.ReadLine();
-                    if(personnumber.Count() == 10)
+                    if (personnumber.Count() == 10)
                     {
                         bookingnumber = booking.LatestBookingNumberByPersonIdentityNumber(personnumber);
                         Console.WriteLine();
@@ -232,7 +241,7 @@ namespace BoatRental
         private static void CheckAllYourRentals()
         {
             var booking = new BookingBoatSystem.Booking();
-            List<int> bookingnumbers;
+            List<int> _bookingnumbers;
             try
             {
                 Console.Clear();
@@ -241,12 +250,12 @@ namespace BoatRental
                 Console.WriteLine();
                 Console.Write(" Ange personnummer: ");
                 var personnumber = Console.ReadLine();
-                if(personnumber.Count() == 10)
+                if (personnumber.Count() == 10)
                 {
-                    bookingnumbers = booking.GetAllYourBookingsByPersonIdentityNumber(personnumber);
+                    _bookingnumbers = booking.GetAllYourBookingsByPersonIdentityNumber(personnumber);
                     Console.WriteLine();
                     Console.Write(" Dina bokningsnummer är: ");
-                    foreach (var item in bookingnumbers)
+                    foreach (var item in _bookingnumbers)
                     {
                         Console.Write(item + ",");
                     }
@@ -258,7 +267,7 @@ namespace BoatRental
                     Console.WriteLine(" Försök igen - tryck valfri tangent");
                     Console.ReadKey();
                     CheckAllYourRentals();
-                }        
+                }
             }
             catch (Exception ex)
             {
@@ -281,6 +290,7 @@ namespace BoatRental
         private static void GetStatusOfYourRentals(int bookingid)
         {
             var booking = new BookingBoatSystem.Booking();
+            List<Data.Category> _categorylist = new List<Data.Category>();
             try
             {
                 using (var DB = new Data.BoatBookingSystemEntities1())
@@ -298,16 +308,11 @@ namespace BoatRental
                     Console.WriteLine(" BåtNamn: " + therental.BoatName);
                     Console.Write(" Kategori: " + category.CategoryName);
 
-
-
-                    Type enumValues = booking.GetValuesForCategoryNameEnum();
-
-                    string[] catlist = enumValues.GetEnumNames();
-
+                    _categorylist = booking.GetValuesForCategoryName();
+         
 
                     if (category.CategoryName.ToUpper() == CategoryName.SEGELBÅT.ToString())
                     {
-
 
                         if (category.BoatSize == true)
                         {
@@ -318,29 +323,45 @@ namespace BoatRental
                             Console.WriteLine(" mindre än 40 tum.");
                         }
                     }
+                    else
+                    {
+                        foreach (var item in _categorylist)
+                        {
+                            if (item.Name.ToUpper() == category.CategoryName.ToUpper() && item.OverSizeFourty == category.BoatSize)
+                            {
+                                if (category.BoatSize == true)
+                                {
+                                    Console.WriteLine(" över eller lika med 40 tum.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine(" mindre än 40 tum.");
+                                }
+                            }
+                        }
+                    }
+                    Console.WriteLine(" Startdatum: " + therental.DeliveryTime.ToLongDateString());
+                    Console.WriteLine(" Startid: " + therental.DeliveryTime.ToShortTimeString());
 
-                Console.WriteLine(" Startdatum: " + therental.DeliveryTime.ToLongDateString());
-                Console.WriteLine(" Startid: " + therental.DeliveryTime.ToShortTimeString());
+                    if (therental.ReturnTime.HasValue)
+                    {
+                        Console.WriteLine(" Återlämningsdatum: " + therental.ReturnTime.Value.ToLongDateString());
+                        Console.WriteLine(" Återlämningstid: " + therental.ReturnTime.Value.ToShortTimeString());
+                        Console.WriteLine(" Antal timmar: " + booking.GetNumebrOfHoursForTheRental(bookingid));
+                        Console.WriteLine(" Pris: " + booking.GetThePriceOfTheBoatRent(bookingid));
+                    }
+                    else
+                    {
+                        Console.WriteLine(" Båten är ännu inte tillbakalämnad");
+                    }
 
-                if (therental.ReturnTime.HasValue)
-                {
-                    Console.WriteLine(" Återlämningsdatum: " + therental.ReturnTime.Value.ToLongDateString());
-                    Console.WriteLine(" Återlämningstid: " + therental.ReturnTime.Value.ToShortTimeString());
-                    Console.WriteLine(" Antal timmar: " + booking.GetNumebrOfHoursForTheRental(bookingid));
-                    Console.WriteLine(" Pris: " + booking.GetThePriceOfTheBoatRent(bookingid));
                 }
-                else
-                {
-                    Console.WriteLine(" Båten är ännu inte tillbakalämnad");
-                }
-
-            }
             }
             catch (Exception ex)
             {
                 Console.Write("The return rental could't be returned because of \"{0}\" .", ex.Message);
             }
-}
+        }
     }
 }
 
