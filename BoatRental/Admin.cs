@@ -29,7 +29,7 @@ namespace BoatRental
             Console.WriteLine(" 8. Se priser");
             Console.WriteLine(" 9. Avsluta\r\n");
 
-            if(int.TryParse(Console.ReadLine(), out option))
+            if (int.TryParse(Console.ReadLine(), out option))
             {
                 while (option < 10)
                 {
@@ -132,7 +132,6 @@ namespace BoatRental
             Console.WriteLine(" Återgå till meny - tryck valfri tangent");
             Console.ReadKey();
             ShowMenu();
-
         }
 
         private static void GetCategories()
@@ -283,7 +282,7 @@ namespace BoatRental
                     boat.CatID = output;
                 }
                 Console.WriteLine();
-                ShowPrices();
+                GetPrices();
                 Console.WriteLine("\r\nVälj Pris_id: 1, 2, 3 osv.");
                 if (int.TryParse(Console.ReadLine(), out output))
                 {
@@ -314,125 +313,138 @@ namespace BoatRental
             var choice = "n";
             ShowBoats();
             Console.WriteLine();
-            Console.WriteLine("**************** Ändra på data om båt **********************");
-            Console.WriteLine();
-            Console.WriteLine(" Vilken båt vill du ändra information om? ");
-            Console.WriteLine(" Skriv det båt ID som ändringen gäller: ");
-            Console.WriteLine();
-            using (var DB = new Data.BoatBookingSystemEntities1())
+            Console.Write(" Vill du ändra data på någon båt?, j/n: ");
+            choice = Console.ReadLine();
+            if (choice == "j")
             {
-          
-                if (int.TryParse(Console.ReadLine(), out output))
+                Console.WriteLine();
+                Console.WriteLine("**************** Ändra på data om båt **********************");
+                Console.WriteLine();
+                Console.WriteLine(" Vilken båt vill du ändra information om? ");
+                Console.WriteLine(" Skriv det båt ID som ändringen gäller: ");
+                Console.WriteLine();
+                using (var DB = new Data.BoatBookingSystemEntities1())
                 {
-                   var currentboat = DB.Boats.Where(x => x.BoatID == output).FirstOrDefault();
-                    Console.Write(" Ändra namn på båten, j/n: ");
-                    choice = Console.ReadLine();
-                    if(choice == "j")
-                    {
-                        Console.WriteLine();
-                        Console.Write(" Ändra namn: ");
-                        var boatname = Console.ReadLine();
-                        currentboat.Name = boatname;
 
-                        Console.WriteLine();
-                        Console.WriteLine(" Ändra kategori till båten, j/n: ");
+                    if (int.TryParse(Console.ReadLine(), out output))
+                    {
+                        var currentboat = DB.Boats.Where(x => x.BoatID == output).FirstOrDefault();
+                        Console.Write(" Ändra namn på båten, j/n: ");
                         choice = Console.ReadLine();
                         if (choice == "j")
                         {
-                            GetCategories();
                             Console.WriteLine();
-                            Console.WriteLine(" Ändra categori_id: ");
-                            if (int.TryParse(Console.ReadLine(), out output))
-                                currentboat.CatID = output;
+                            Console.Write(" Ändra namn: ");
+                            var boatname = Console.ReadLine();
+                            currentboat.Name = boatname;
 
                             Console.WriteLine();
-                            Console.WriteLine(" Ändra priskategori till båten, j/n: ");
+                            Console.WriteLine(" Ändra kategori till båten, j/n: ");
                             choice = Console.ReadLine();
                             if (choice == "j")
                             {
-                                Console.WriteLine(" Ändra PrisID: ");
-                                if (int.TryParse(Console.ReadLine(), out output))
-                                    currentboat.PriceID = output;
-                            }
-
-                        }
-                        else
-                        {
-                            Console.WriteLine();
-                            Console.WriteLine(" Ändra priskategori till båten, j/n: ");
-                            choice = Console.ReadLine();
-                            if (choice == "j")
-                            {
-                                Console.WriteLine(" Ändra PrisID: ");
-                                if (int.TryParse(Console.ReadLine(), out output))
-                                    currentboat.PriceID = output;
-                            }
-             
-                        }
-                    }
-                    else
-                    {
-                      
-                        Console.WriteLine();
-                        Console.Write(" Ändra kategori till båten, j/n: ");
-                        choice = Console.ReadLine();
-                        if (choice == "j")
-                        {
-                            GetCategories();
-                            Console.WriteLine();
-                            Console.Write(" Ändra categori_id: ");
-                            if (int.TryParse(Console.ReadLine(), out output))
-                            {
-                                currentboat.CatID = output;
-                            }    
-                            else
-                            {
-                                Console.WriteLine(" Felaktig inmatning categori_id:et har ingen referens ");
-                            }
-                            Console.WriteLine();
-                            Console.WriteLine(" Ändra priskategori till båten, j/n: ");
-                            choice = Console.ReadLine();
-                            if (choice == "j")
-                            {
-                                ShowPrices();
+                                GetCategories();
                                 Console.WriteLine();
-                                Console.Write(" Ändra PrisID: ");
+                                Console.WriteLine(" Ändra categori_id: ");
                                 if (int.TryParse(Console.ReadLine(), out output))
-                                    currentboat.PriceID = output;
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine(" Ändra priskategori till båten, j/n: ");
-                            choice = Console.ReadLine();
-                            if (choice == "j")
-                            {
-                                Console.WriteLine(" Ändra PrisID: ");
-                                if (int.TryParse(Console.ReadLine(), out output))
-                                    currentboat.PriceID = output;
+                                    currentboat.CatID = output;
+
+                                Console.WriteLine();
+                                Console.WriteLine(" Ändra priskategori till båten, j/n: ");
+                                choice = Console.ReadLine();
+                                if (choice == "j")
+                                {
+                                    Console.WriteLine(" Ändra PrisID: ");
+                                    if (int.TryParse(Console.ReadLine(), out output))
+                                        currentboat.PriceID = output;
+                                }
+
                             }
                             else
                             {
                                 Console.WriteLine();
-                                Console.WriteLine();
-                                Console.WriteLine(" Återgå till meny - tryck valfri tangent");
-                                Console.ReadKey();
-                                ShowMenu();
+                                Console.WriteLine(" Ändra priskategori till båten, j/n: ");
+                                choice = Console.ReadLine();
+                                if (choice == "j")
+                                {
+                                    Console.WriteLine(" Ändra PrisID: ");
+                                    if (int.TryParse(Console.ReadLine(), out output))
+                                        currentboat.PriceID = output;
+                                }
 
                             }
+                        }
+                        else
+                        {
 
+                            Console.WriteLine();
+                            Console.Write(" Ändra kategori till båten, j/n: ");
+                            choice = Console.ReadLine();
+                            if (choice == "j")
+                            {
+                                GetCategories();
+                                Console.WriteLine();
+                                Console.Write(" Ändra categori_id: ");
+                                if (int.TryParse(Console.ReadLine(), out output))
+                                {
+                                    currentboat.CatID = output;
+                                }
+                                else
+                                {
+                                    Console.WriteLine(" Felaktig inmatning categori_id:et har ingen referens ");
+                                }
+                                Console.WriteLine();
+                                Console.WriteLine(" Ändra priskategori till båten, j/n: ");
+                                choice = Console.ReadLine();
+                                if (choice == "j")
+                                {
+                                    GetPrices();
+                                    Console.WriteLine();
+                                    Console.Write(" Ändra PrisID: ");
+                                    if (int.TryParse(Console.ReadLine(), out output))
+                                        currentboat.PriceID = output;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine(" Ändra priskategori till båten, j/n: ");
+                                choice = Console.ReadLine();
+                                if (choice == "j")
+                                {
+                                    Console.WriteLine(" Ändra PrisID: ");
+                                    if (int.TryParse(Console.ReadLine(), out output))
+                                        currentboat.PriceID = output;
+                                }
+                                else
+                                {
+                                    Console.WriteLine();
+                                    Console.WriteLine();
+                                    Console.WriteLine(" Återgå till meny - tryck valfri tangent");
+                                    Console.ReadKey();
+                                    ShowMenu();
+                                }
+                            }
                         }
                     }
+                    try
+                    {
+                        DB.SaveChanges();
+                        ShowBoats();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("The boat could't be saved because of \"{0}\" .", ex.Message);
+                    }
                 }
-                try
-                {
-                    DB.SaveChanges();
-                    ShowBoats();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("The boat could't be saved because of \"{0}\" .", ex.Message);
-                }
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine(" Återgå till meny - tryck valfri tangent");
+                Console.ReadKey();
+                ShowMenu();
+
             }
             Console.WriteLine();
             Console.WriteLine();
@@ -449,7 +461,7 @@ namespace BoatRental
 
             using (var DB = new Data.BoatBookingSystemEntities1())
             {
-                var boats = DB.Boats.Join(DB.Categories, cat => cat.CatID, boat => boat.CatID, (boat, cat) => new { BoatID = boat.BoatID, BoatName = boat.Name, CatName = cat.Name, SizeOver40Feets = cat.OverSizeFourty }).ToList();
+                var boats = DB.Boats.Join(DB.Categories, cat => cat.CatID, boat => boat.CatID, (boat, cat) => new { BoatID = boat.BoatID, BoatName = boat.Name, PrisID = boat.PriceID, CatName = cat.Name, SizeOver40Feets = cat.OverSizeFourty }).ToList();
                 Console.Clear();
 
                 foreach (var r in boats)
@@ -475,14 +487,13 @@ namespace BoatRental
                             }
                         }
                     }
-
+                    Console.WriteLine(" PrisID: " + r.PrisID);
                 }
                 Console.WriteLine();
                 Console.WriteLine();
                 Console.WriteLine(" Återgå till meny - tryck valfri tangent");
                 Console.ReadKey();
                 ShowMenu();
-
             }
         }
         private static void ShowBoats()
@@ -535,7 +546,7 @@ namespace BoatRental
             decimal output = 0;
             bool exit = false;
 
-            ShowPrices();
+            GetPrices();
 
             while (!exit)
             {
@@ -622,12 +633,13 @@ namespace BoatRental
         private static void ChangePrice()
         {
             int output = 0;
+            var choice = "n";
 
             using (var DB = new Data.BoatBookingSystemEntities1())
             {
                 var prices = DB.Prices.ToList();
                 Console.Clear();
-                ShowPrices();
+                GetPrices();
 
                 Console.WriteLine(" ================================");
                 Console.WriteLine(" Ändra pris");
@@ -639,78 +651,170 @@ namespace BoatRental
                 {
                     var newprice = DB.Prices.Where(x => x.PriceID == output).FirstOrDefault();
                     Console.WriteLine();
-                    Console.Write(" Ändra grundavgift: ");
-                    decimal bfoutput; ;
-                    var basicfee = Console.ReadLine();
+                    Console.Write(" Vill du andra grundavgift, j/n: ");
+                    choice = Console.ReadLine();
+                    {
+                        if (choice == "j")
+                        {
+                            Console.WriteLine();
+                            Console.Write(" Ändra grundavgift: ");
+                            decimal bfoutput; ;
+                            var basicfee = Console.ReadLine();
 
-                    if (decimal.TryParse(basicfee, out bfoutput))
-                    {
-                        newprice.BasicFee = bfoutput;
-                    }
-                    Console.WriteLine();
-                    Console.Write(" Ändra timavgift: ");
-                    decimal hfoutput;
-                    var hourfee = Console.ReadLine();
-                    if (decimal.TryParse(hourfee, out hfoutput))
-                    {
-                        newprice.HourFee = hfoutput;
-                    }
-                    Console.WriteLine();
-                    Console.Write(" Ändra grundavgift multipliceringssats liten båt (ange , som decimalavskiljare): ");
-                    decimal bmsboutput;
-                    var bmsb = Console.ReadLine();
-                    if (decimal.TryParse(bmsb, out bmsboutput))
-                    {
-                        newprice.BasicPriceSmallBoatAlgorithm = bmsboutput;
-                    }
-                    Console.WriteLine();
-                    Console.Write(" Ändra grundavgift multipliceringssats stor båt (ange , som decimalavskiljare): ");
-                    decimal gmsboutput;
-                    var gmsb = Console.ReadLine();
-                    if (decimal.TryParse(gmsb, out gmsboutput))
-                    {
-                        newprice.BasicPriceBigBoatAlgorithm = gmsboutput;
-                    }
-                    Console.WriteLine();
-                    Console.Write(" Ändra timprisets multipliceringssats liten båt (ange , som decimalavskiljare): ");
-                    decimal hmsboutput = 0;
-                    var hmsb = Console.ReadLine();
-                    if (decimal.TryParse(hmsb, out hmsboutput))
-                    {
-                        newprice.HourPriceSmallBoatAlgorithm = hmsboutput;
-                    }
-                    Console.WriteLine();
-                    Console.Write(" Ändra timprisets multipliceringssats stor båt (ange , som decimalavskiljare): ");
-                    decimal hmlboutput = 0;
-                    var hmlb = Console.ReadLine();
+                            if (decimal.TryParse(basicfee, out bfoutput))
+                            {
+                                newprice.BasicFee = bfoutput;
+                            }
+                            Console.WriteLine();
+                            Console.Write(" Ändra timavgift: ");
+                            decimal hfoutput;
+                            var hourfee = Console.ReadLine();
+                            if (decimal.TryParse(hourfee, out hfoutput))
+                            {
+                                newprice.HourFee = hfoutput;
+                            }
+                            Console.WriteLine();
+                            Console.Write(" Ändra grundavgift multipliceringssats liten båt (ange , som decimalavskiljare): ");
+                            decimal bmsboutput;
+                            var bmsb = Console.ReadLine();
+                            if (decimal.TryParse(bmsb, out bmsboutput))
+                            {
+                                newprice.BasicPriceSmallBoatAlgorithm = bmsboutput;
+                            }
+                            Console.WriteLine();
+                            Console.Write(" Ändra grundavgift multipliceringssats stor båt (ange , som decimalavskiljare): ");
+                            decimal gmsboutput;
+                            var gmsb = Console.ReadLine();
+                            if (decimal.TryParse(gmsb, out gmsboutput))
+                            {
+                                newprice.BasicPriceBigBoatAlgorithm = gmsboutput;
+                            }
+                            Console.WriteLine();
+                            Console.Write(" Ändra timprisets multipliceringssats liten båt (ange , som decimalavskiljare): ");
+                            decimal hmsboutput = 0;
+                            var hmsb = Console.ReadLine();
+                            if (decimal.TryParse(hmsb, out hmsboutput))
+                            {
+                                newprice.HourPriceSmallBoatAlgorithm = hmsboutput;
+                            }
+                            Console.WriteLine();
+                            Console.Write(" Ändra timprisets multipliceringssats stor båt (ange , som decimalavskiljare): ");
+                            decimal hmlboutput = 0;
+                            var hmlb = Console.ReadLine();
 
-                    if (decimal.TryParse(hmlb, out hmlboutput))
-                    {
-                        newprice.HourPriceBigBoatAlgorithm = hmlboutput;
-                    }
-            
-                    try
-                    {
-                        DB.SaveChanges();
-                        var changedprices = DB.Prices.ToList();
+                            if (decimal.TryParse(hmlb, out hmlboutput))
+                            {
+                                newprice.HourPriceBigBoatAlgorithm = hmlboutput;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine();
+                            Console.Write(" Vill du andra timavgiften, j/n: ");
+                            choice = Console.ReadLine();
+                            if (choice == "j")
+                            {
+                                Console.WriteLine();
+                                Console.Write(" Ändra timavgift: ");
+                                decimal hfoutput;
+                                var hourfee = Console.ReadLine();
+                                if (decimal.TryParse(hourfee, out hfoutput))
+                                {
+                                    newprice.HourFee = hfoutput;
+                                }
+                                Console.WriteLine();
+                                Console.Write(" Ändra grundavgift multipliceringssats liten båt (ange , som decimalavskiljare): ");
+                                decimal bmsboutput;
+                                var bmsb = Console.ReadLine();
+                                if (decimal.TryParse(bmsb, out bmsboutput))
+                                {
+                                    newprice.BasicPriceSmallBoatAlgorithm = bmsboutput;
+                                }
+                                Console.WriteLine();
+                                Console.Write(" Ändra grundavgift multipliceringssats stor båt (ange , som decimalavskiljare): ");
+                                decimal gmsboutput;
+                                var gmsb = Console.ReadLine();
+                                if (decimal.TryParse(gmsb, out gmsboutput))
+                                {
+                                    newprice.BasicPriceBigBoatAlgorithm = gmsboutput;
+                                }
+                                Console.WriteLine();
+                                Console.Write(" Ändra timprisets multipliceringssats liten båt (ange , som decimalavskiljare): ");
+                                decimal hmsboutput = 0;
+                                var hmsb = Console.ReadLine();
+                                if (decimal.TryParse(hmsb, out hmsboutput))
+                                {
+                                    newprice.HourPriceSmallBoatAlgorithm = hmsboutput;
+                                }
+                                Console.WriteLine();
+                                Console.Write(" Ändra timprisets multipliceringssats stor båt (ange , som decimalavskiljare): ");
+                                decimal hmlboutput = 0;
+                                var hmlb = Console.ReadLine();
 
-                        ShowPrices();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("The price could't be saved because of \"{0}\" .", ex.Message);
-                    }
+                                if (decimal.TryParse(hmlb, out hmlboutput))
+                                {
+                                    newprice.HourPriceBigBoatAlgorithm = hmlboutput;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine();
+                                Console.Write(" Ändra grundavgift multipliceringssats liten båt (ange , som decimalavskiljare): ");
+                                decimal bmsboutput;
+                                var bmsb = Console.ReadLine();
+                                if (decimal.TryParse(bmsb, out bmsboutput))
+                                {
+                                    newprice.BasicPriceSmallBoatAlgorithm = bmsboutput;
+                                }
+                                Console.WriteLine();
+                                Console.Write(" Ändra grundavgift multipliceringssats stor båt (ange , som decimalavskiljare): ");
+                                decimal gmsboutput;
+                                var gmsb = Console.ReadLine();
+                                if (decimal.TryParse(gmsb, out gmsboutput))
+                                {
+                                    newprice.BasicPriceBigBoatAlgorithm = gmsboutput;
+                                }
+                                Console.WriteLine();
+                                Console.Write(" Ändra timprisets multipliceringssats liten båt (ange , som decimalavskiljare): ");
+                                decimal hmsboutput = 0;
+                                var hmsb = Console.ReadLine();
+                                if (decimal.TryParse(hmsb, out hmsboutput))
+                                {
+                                    newprice.HourPriceSmallBoatAlgorithm = hmsboutput;
+                                }
+                                Console.WriteLine();
+                                Console.Write(" Ändra timprisets multipliceringssats stor båt (ange , som decimalavskiljare): ");
+                                decimal hmlboutput = 0;
+                                var hmlb = Console.ReadLine();
 
+                                if (decimal.TryParse(hmlb, out hmlboutput))
+                                {
+                                    newprice.HourPriceBigBoatAlgorithm = hmlboutput;
+                                }
+                            }
+                        }
+                        try
+                        {
+                            DB.SaveChanges();
+                            var changedprices = DB.Prices.ToList();
+
+                            GetPrices();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("The price could't be saved because of \"{0}\" .", ex.Message);
+                        }
+
+                    }
                 }
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine(" Återgå till meny - tryck valfri tangent");
+                Console.ReadKey();
+                ShowMenu();
             }
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine(" Återgå till meny - tryck valfri tangent");
-            Console.ReadKey();
-            ShowMenu();
         }
-
-        private static void ShowPrices()
+        private static void GetPrices()
         {
             using (var DB = new Data.BoatBookingSystemEntities1())
             {
@@ -737,6 +841,34 @@ namespace BoatRental
                         break;
                 }
             }
+        }
+        private static void ShowPrices()
+        {
+            using (var DB = new Data.BoatBookingSystemEntities1())
+            {
+                var prices = DB.Prices.ToList();
+
+                foreach (var p in prices)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("***************************************************************");
+                    Console.WriteLine(" PriceID: " + p.PriceID);
+                    Console.WriteLine(" Grundavgift: " + p.BasicFee);
+                    Console.WriteLine(" Timavgift: " + p.HourFee);
+                    Console.WriteLine(" Grundavgift multipliceringssats liten båt: " + p.BasicPriceSmallBoatAlgorithm);
+                    Console.WriteLine(" Grundavgift multipliceringssats stor båt: " + p.BasicPriceBigBoatAlgorithm);
+                    Console.WriteLine(" Timavgift multipliceringssats liten båt: " + p.HourPriceSmallBoatAlgorithm);
+                    Console.WriteLine(" Timavgift multipliceringssats stor båt: " + p.HourPriceBigBoatAlgorithm);
+                    Console.WriteLine();
+                    Console.WriteLine("***************************************************************");
+                }
+
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine(" Återgå till meny - tryck valfri tangent");
+            Console.ReadKey();
+            ShowMenu();
         }
     }
 }
